@@ -6,7 +6,7 @@ namespace Keboola\TransformationMigrate;
 
 use Keboola\TransformationMigrate\Exception\CheckConfigException;
 
-class TransformationConfigValidator
+class TransformationValidator
 {
     private array $config;
 

@@ -27,7 +27,7 @@ class Application
 
     public function checkConfigIsValid(array $transformationConfig): void
     {
-        $transformationValidator = new TransformationConfigValidator($transformationConfig);
+        $transformationValidator = new TransformationValidator($transformationConfig);
         $transformationValidator->validate();
     }
 
