@@ -1,10 +1,11 @@
 {
-    "name": "keboola/my-component",
-    "description": "MyComponent description",
+    "name": "keboola/transformation-migrate",
+    "description": "Migration tool OLD -> NEW transformation",
     "license": "MIT",
     "require": {
         "php": "^7.4",
-        "keboola/php-component": "^8.1"
+        "keboola/php-component": "^8.1",
+        "keboola/storage-api-client": "^11.7"
     },
     "require-dev": {
         "php-parallel-lint/php-parallel-lint": "^1.2",
@@ -17,13 +18,14 @@
     },
     "autoload": {
         "psr-4": {
-            "MyComponent\\": "src/"
+            "Keboola\\TransformationMigrate\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "MyComponent\\Tests\\": "tests/phpunit/",
-            "MyComponent\\FunctionalTests\\": "tests/functional/"
+            "Keboola\\TransformationMigrate\\Tests\\": "tests/phpunit/",
+            "Keboola\\TransformationMigrate\\Traits\\": "tests/traits/",
+            "Keboola\\TransformationMigrate\\FunctionalTests\\": "tests/functional/"
         }
     },
     "scripts": {
