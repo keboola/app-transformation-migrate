@@ -23,7 +23,10 @@ class TransformationValidator
 
     private function validateBackend(): void
     {
-        $backends = array_map(fn(array $v) => $v['configuration']['backend'], $this->config['rows']);
+        $backends = array_map(
+            fn(array $v) => sprintf('%s-%s', $v['configuration']['backend'], $v['configuration']['type']),
+            $this->config['rows']
+        );
         $uniqueBackends = array_unique($backends);
 
         if (count($uniqueBackends) > 1) {
