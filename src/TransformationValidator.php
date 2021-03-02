@@ -17,6 +17,7 @@ class TransformationValidator
 
     public function validate(): void
     {
+        $this->validateBucketRows();
         $this->validateBackend();
         $this->validatePhases();
     }
@@ -53,5 +54,15 @@ class TransformationValidator
     private function getTransformationName(): string
     {
         return $this->config['name'];
+    }
+
+    private function validateBucketRows(): void
+    {
+        if (count($this->config['rows']) === 0) {
+            throw new CheckConfigException(sprintf(
+                'Transformation bucket "%s" is empty.',
+                $this->getTransformationName()
+            ));
+        }
     }
 }
