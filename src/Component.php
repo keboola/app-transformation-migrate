@@ -14,9 +14,23 @@ class Component extends BaseComponent
 {
     private const CHECK_ACTION = 'check';
 
-    protected function run(): void
+    private const CHECK_MIGRATE = 'migrate';
+
+    protected function migrate(): array
     {
-        // @TODO implement
+        $application = new Application(
+            $this->getConfig(),
+            new Components($this->getStorageClient())
+        );
+
+        if ($this->getConfig()->hasTransformationId()) {
+            $transformationConfig = $application->getTransformationConfig($this->getConfig()->getTransformationId());
+            $application->checkConfigIsValid($transformationConfig);
+
+            return $application->migrateTransformationConfig($transformationConfig);
+        }
+
+        return [];
     }
 
     protected function checkTransformation(): array
@@ -45,6 +59,7 @@ class Component extends BaseComponent
     protected function getSyncActions(): array
     {
         return [
+            self::CHECK_MIGRATE => 'migrate',
             self::CHECK_ACTION => 'checkTransformation',
         ];
     }
