@@ -1,0 +1,65 @@
+[
+  {
+    "parameters": {
+      "blocks": [
+        {
+          "name": "snflk row",
+          "codes": [
+            {
+              "name": "New Code",
+              "script": [
+                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "snflk row 2",
+          "codes": [
+            {
+              "name": "New Code",
+              "script": [
+                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "storage": {
+      "input": {
+        "tables": [
+          {
+            "source": "inputTable1",
+            "destination": "inputTable1",
+            "columns": []
+          },
+          {
+            "source": "inputTable2",
+            "destination": "inputTable2",
+            "columns": []
+          }
+        ]
+      },
+      "output": {
+        "tables": [
+          {
+            "source": "outputTable1",
+            "destination": "outputTable1",
+            "columns": []
+          },
+          {
+            "source": "outputTable2",
+            "destination": "outputTable2",
+            "columns": []
+          },
+          {
+            "source": "outputTable3",
+            "destination": "outputTable3",
+            "columns": []
+          }
+        ]
+      }
+    }
+  }
+]

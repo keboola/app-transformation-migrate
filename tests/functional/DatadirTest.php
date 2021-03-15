@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Keboola\TransformationMigrate\FunctionalTests;
 
 use Keboola\DatadirTests\DatadirTestCase;
+use Keboola\DatadirTests\DatadirTestSpecificationInterface;
 use Keboola\StorageApi\Components;
 use Keboola\TransformationMigrate\Traits\RemoveTrasformationBucketsTrait;
 use RuntimeException;
@@ -20,6 +21,8 @@ class DatadirTest extends DatadirTestCase
     protected string $testTempDir;
 
     private int $transformationBucketId;
+
+    protected array $output = [];
 
     protected function setUp(): void
     {
@@ -46,6 +49,41 @@ class DatadirTest extends DatadirTestCase
         }
     }
 
+    /**
+     * @dataProvider provideDatadirSpecifications
+     */
+    public function testDatadir(DatadirTestSpecificationInterface $specification): void
+    {
+        $tempDatadir = $this->getTempDatadir($specification);
+
+        $process = $this->runScript($tempDatadir->getTmpFolder());
+
+        if ($process->getOutput()) {
+            $this->output = json_decode($process->getOutput(), true);
+        }
+
+        // Load tearDown.php file
+        $tearDownPhpFile = $this->testProjectDir . '/tearDown.php';
+        if (file_exists($tearDownPhpFile)) {
+            // Get callback from file and check it
+            $initCallback = require $tearDownPhpFile;
+            if (!is_callable($initCallback)) {
+                throw new RuntimeException(sprintf('File "%s" must return callback!', $tearDownPhpFile));
+            }
+
+            // Invoke callback
+            $result = $initCallback($this);
+
+            if ($result) {
+                $transformationDirPath = $this->testTempDir . '/out/transformationDump/';
+                mkdir($transformationDirPath);
+                file_put_contents($transformationDirPath . 'transformations.json', $result);
+            }
+        }
+
+        $this->assertMatchesSpecification($specification, $process, $tempDatadir->getTmpFolder());
+    }
+
     public function tearDown(): void
     {
         $this->removeTransformationBuckets(TestManager::TRANSFORMATION_BUCKET_NAME);
@@ -60,5 +98,10 @@ class DatadirTest extends DatadirTestCase
     public function getComponentsClient(): Components
     {
         return $this->componentsClient;
+    }
+
+    public function getOutput(): array
+    {
+        return $this->output;
     }
 }
