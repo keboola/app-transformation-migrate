@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Keboola\TransformationMigrate;
 
+use Keboola\TransformationMigrate\Configuration\Config;
 use Keboola\TransformationMigrate\Exception\CheckConfigException;
 
 class TransformationValidator
@@ -35,6 +36,15 @@ class TransformationValidator
                 'Transformations in the bucket "%s" don\'t have the same backend.',
                 $this->getTransformationName()
             ));
+        }
+
+        foreach ($uniqueBackends as $uniqueBackend) {
+            if (!in_array($uniqueBackend, Config::getKnownBackends())) {
+                throw new CheckConfigException(sprintf(
+                    'Unknown backend type "%s".',
+                    $uniqueBackend
+                ));
+            }
         }
     }
 

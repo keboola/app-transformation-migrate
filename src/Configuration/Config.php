@@ -4,11 +4,52 @@ declare(strict_types=1);
 
 namespace Keboola\TransformationMigrate\Configuration;
 
+use InvalidArgumentException;
 use Keboola\Component\Config\BaseConfig;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 class Config extends BaseConfig
 {
+    private const SNOWFLAKE_COMPONENT_ID = 'keboola.snowflake-transformation';
+
+    private const PYTHON_COMPONENT_ID = 'keboola.python-transformation-v2';
+
+    public const TRANSFORMATION_TYPE_SNOWFLAKE = 'snowflake-simple';
+
+    public const TRANSFORMATION_TYPE_PYTHON = 'docker-python';
+
+    public static function getKnownBackends(): array
+    {
+        return [
+            self::TRANSFORMATION_TYPE_SNOWFLAKE,
+            self::TRANSFORMATION_TYPE_PYTHON,
+        ];
+    }
+
+    public static function getComponentId(string $transformationTypeKey): string
+    {
+        switch ($transformationTypeKey) {
+            case Config::TRANSFORMATION_TYPE_SNOWFLAKE:
+                return self::SNOWFLAKE_COMPONENT_ID;
+            case Config::TRANSFORMATION_TYPE_PYTHON:
+                return self::PYTHON_COMPONENT_ID;
+            default:
+                throw new InvalidConfigurationException(
+                    sprintf('Unknown backend type "%s"', $transformationTypeKey)
+                );
+        }
+    }
+
+    public function hasTransformationId(): bool
+    {
+        try {
+            $this->getValue(['parameters', 'transformationId']);
+            return true;
+        } catch (InvalidArgumentException $e) {
+            return false;
+        }
+    }
+
     public function getTransformationId(): int
     {
         return (int) $this->getValue(['parameters', 'transformationId']);
