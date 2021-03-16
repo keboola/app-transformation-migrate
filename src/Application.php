@@ -39,18 +39,15 @@ class Application
                 $row['configuration']['type']
             );
 
-            $transformationV2 = new TransformationV2(
-                $transformationConfig['name'],
-                $row['configuration']['type'],
-                $row['configuration']['backend']
-            );
-            if (isset($transformationsV2[$transformationKey])) {
-                $transformationV2 = $transformationsV2[$transformationKey];
+            if (!isset($transformationsV2[$transformationKey])) {
+                $transformationsV2[$transformationKey] = new TransformationV2(
+                    $transformationConfig['name'],
+                    $row['configuration']['type'],
+                    $row['configuration']['backend']
+                );
             }
 
-            $transformationV2 = $this->processRow($row, $transformationV2);
-
-            $transformationsV2[$transformationKey] = $transformationV2;
+            $this->processRow($row, $transformationsV2[$transformationKey]);
         }
 
         $result = [];
@@ -98,7 +95,7 @@ class Application
         return $this->componentsClient->addConfiguration($options);
     }
 
-    private function processRow(array $row, TransformationV2 $transformationV2): TransformationV2
+    private function processRow(array $row, TransformationV2 $transformationV2): void
     {
         if (isset($row['configuration']['input'])) {
             foreach ($row['configuration']['input'] as $inputMapping) {
@@ -119,8 +116,6 @@ class Application
         $block->setName($row['name']);
         $block->addCode($code);
         $transformationV2->addBlock($block);
-
-        return $transformationV2;
     }
 
     private function prepareTransformationConfigV2(TransformationV2 $transformationV2): array
