@@ -107,6 +107,9 @@ class Application
                 $transformationV2->addOutputMappingTable($outputMapping);
             }
         }
+        if (isset($row['configuration']['packages'])) {
+            $transformationV2->addPackages($row['configuration']['packages']);
+        }
 
         $code = new TransformationV2Code();
         foreach ($row['configuration']['queries'] as $query) {
@@ -121,6 +124,11 @@ class Application
     private function prepareTransformationConfigV2(TransformationV2 $transformationV2): array
     {
         $parameters = ['blocks' => []];
+
+        if ($transformationV2->hasPackages()) {
+            $parameters['packages'] = $transformationV2->getPackages();
+        }
+
         foreach ($transformationV2->getBlocks() as $block) {
             $blockArr = [
                 'name' => $block->getName(),

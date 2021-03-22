@@ -18,6 +18,8 @@ class TransformationV2
     private array $inputMappingTables = [];
 
     private array $outputMappingTables = [];
+    
+    private array $packages = [];
 
     public function __construct(string $name, string $type, string $backend)
     {
@@ -41,6 +43,25 @@ class TransformationV2
     {
         $this->outputMappingTables[$outputMappingTable['destination']] =
             $this->renameOutputMappingKeys($outputMappingTable);
+    }
+
+    public function addPackages(array $packages): void
+    {
+        array_walk($packages, function (string $v): void {
+            if (!in_array($v, $this->packages)) {
+                $this->packages[] = $v;
+            }
+        });
+    }
+
+    public function hasPackages(): bool
+    {
+        return $this->packages !== [];
+    }
+
+    public function getPackages(): array
+    {
+        return $this->packages;
     }
 
     public function getBlocks(): array
