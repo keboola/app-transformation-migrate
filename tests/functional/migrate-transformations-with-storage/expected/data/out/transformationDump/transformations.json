@@ -32,7 +32,11 @@
           {
             "source": "inputTable1",
             "destination": "inputTable1",
-            "columns": []
+            "columns": [],
+            "changed_since": "-10 minutes",
+            "where_column": "column",
+            "where_values": "values",
+            "where_operator": "operator"
           },
           {
             "source": "inputTable2",
@@ -46,7 +50,11 @@
           {
             "source": "outputTable1",
             "destination": "outputTable1",
-            "columns": []
+            "columns": [],
+            "primary_key": "primary key",
+            "delete_where_column": "columns",
+            "delete_where_operator": "operator",
+            "delete_where_values": "values"
           },
           {
             "source": "outputTable2",

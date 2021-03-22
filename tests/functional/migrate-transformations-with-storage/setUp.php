@@ -18,6 +18,10 @@ return function (DatadirTest $test): void {
                     'source' => 'inputTable1',
                     'destination' => 'inputTable1',
                     'columns' => [],
+                    'changedSince' => '-10 minutes',
+                    'whereColumn' => 'column',
+                    'whereValues' => 'values',
+                    'whereOperator' => 'operator',
                 ],
                 [
                     'source' => 'inputTable2',
@@ -30,6 +34,10 @@ return function (DatadirTest $test): void {
                     'source' => 'outputTable1',
                     'destination' => 'outputTable1',
                     'columns' => [],
+                    'primaryKey' => 'primary key',
+                    'deleteWhereColumn' => 'columns',
+                    'deleteWhereOperator' => 'operator',
+                    'deleteWhereValues' => 'values',
                 ],
                 [
                     'source' => 'outputTable2',
