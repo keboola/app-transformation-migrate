@@ -33,12 +33,14 @@ class TransformationV2
 
     public function addInputMappingTable(array $inputMappingTable): void
     {
-        $this->inputMappingTables[$inputMappingTable['source']] = $inputMappingTable;
+        $this->inputMappingTables[$inputMappingTable['source']] =
+            $this->renameInputMappingKeys($inputMappingTable);
     }
 
     public function addOutputMappingTable(array $outputMappingTable): void
     {
-        $this->outputMappingTables[$outputMappingTable['destination']] = $outputMappingTable;
+        $this->outputMappingTables[$outputMappingTable['destination']] =
+            $this->renameOutputMappingKeys($outputMappingTable);
     }
 
     public function getBlocks(): array
@@ -69,5 +71,53 @@ class TransformationV2
     public function getBackend(): string
     {
         return $this->backend;
+    }
+
+    private function renameInputMappingKeys(array $inputMappingTable): array
+    {
+        $result = [];
+        foreach ($inputMappingTable as $k => $v) {
+            switch ($k) {
+                case 'changedSince':
+                    $result['changed_since'] = $v;
+                    break;
+                case 'whereColumn':
+                    $result['where_column'] = $v;
+                    break;
+                case 'whereValues':
+                    $result['where_values'] = $v;
+                    break;
+                case 'whereOperator':
+                    $result['where_operator'] = $v;
+                    break;
+                default:
+                    $result[$k] = $v;
+            }
+        }
+        return $result;
+    }
+
+    private function renameOutputMappingKeys(array $outputMappingTable): array
+    {
+        $result = [];
+        foreach ($outputMappingTable as $k => $v) {
+            switch ($k) {
+                case 'primaryKey':
+                    $result['primary_key'] = $v;
+                    break;
+                case 'deleteWhereColumn':
+                    $result['delete_where_column'] = $v;
+                    break;
+                case 'deleteWhereOperator':
+                    $result['delete_where_operator'] = $v;
+                    break;
+                case 'deleteWhereValues':
+                    $result['delete_where_values'] = $v;
+                    break;
+                default:
+                    $result[$k] = $v;
+            }
+        }
+        return $result;
     }
 }
