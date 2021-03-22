@@ -1,0 +1,42 @@
+[
+  {
+    "parameters": {
+      "blocks": [
+        {
+          "name": "python row",
+          "codes": [
+            {
+              "name": "New Code",
+              "script": [
+                "print(1)"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "python row 2",
+          "codes": [
+            {
+              "name": "New Code",
+              "script": [
+                "print(2)"
+              ]
+            }
+          ]
+        }
+      ],
+      "packages": [
+        "xgboost",
+        "secondPackage"
+      ]
+    },
+    "storage": {
+      "input": {
+        "tables": []
+      },
+      "output": {
+        "tables": []
+      }
+    }
+  }
+]
