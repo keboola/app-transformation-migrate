@@ -18,7 +18,7 @@ class TransformationV2
     private array $inputMappingTables = [];
 
     private array $outputMappingTables = [];
-    
+
     private array $packages = [];
 
     public function __construct(string $name, string $type, string $backend)
