@@ -19,33 +19,7 @@ class TransformationValidator
     public function validate(): void
     {
         $this->validateBucketRows();
-        $this->validateBackend();
         $this->validatePhases();
-    }
-
-    private function validateBackend(): void
-    {
-        $backends = array_map(
-            fn(array $v) => sprintf('%s-%s', $v['configuration']['backend'], $v['configuration']['type']),
-            $this->config['rows']
-        );
-        $uniqueBackends = array_unique($backends);
-
-        if (count($uniqueBackends) > 1) {
-            throw new CheckConfigException(sprintf(
-                'Transformations in the bucket "%s" don\'t have the same backend.',
-                $this->getTransformationName()
-            ));
-        }
-
-        foreach ($uniqueBackends as $uniqueBackend) {
-            if (!in_array($uniqueBackend, Config::getKnownBackends())) {
-                throw new CheckConfigException(sprintf(
-                    'Unknown backend type "%s".',
-                    $uniqueBackend
-                ));
-            }
-        }
     }
 
     private function validatePhases(): void

@@ -1,0 +1,52 @@
+[
+  {
+    "parameters": {
+      "blocks": [
+        {
+          "name": "snflk row",
+          "codes": [
+            {
+              "name": "New Code",
+              "script": [
+                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "storage": {
+      "input": {
+        "tables": []
+      },
+      "output": {
+        "tables": []
+      }
+    }
+  },
+  {
+    "parameters": {
+      "blocks": [
+        {
+          "name": "python",
+          "codes": [
+            {
+              "name": "New Code",
+              "script": [
+                "print(1)"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "storage": {
+      "input": {
+        "tables": []
+      },
+      "output": {
+        "tables": []
+      }
+    }
+  }
+]
