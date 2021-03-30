@@ -18,6 +18,8 @@ return function (DatadirTest $test): void {
         $configuration,
         'snflk row',
         [
+            'backend' => 'docker',
+            'type' => 'python',
             'phase' => 2,
         ]
     );

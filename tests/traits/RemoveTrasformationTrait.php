@@ -6,8 +6,9 @@ namespace Keboola\TransformationMigrate\Traits;
 
 use Keboola\StorageApi\Components;
 use Keboola\StorageApi\Options\Components\ListComponentConfigurationsOptions;
+use Keboola\TransformationMigrate\Configuration\Config;
 
-trait RemoveTrasformationBucketsTrait
+trait RemoveTrasformationTrait
 {
     protected Components $componentsClient;
 
@@ -24,5 +25,14 @@ trait RemoveTrasformationBucketsTrait
                 $this->componentsClient->deleteConfiguration('transformation', $configuration['id']);
             }
         }
+    }
+
+    public function removeTransformationV2(array $item): void
+    {
+        $componentId = Config::getComponentId(sprintf('%s-%s', $item['backend'], $item['type']));
+
+        $this->componentsClient->deleteConfiguration($componentId, $item['id']);
+        // second call - remove permanently from trash
+        $this->componentsClient->deleteConfiguration($componentId, $item['id']);
     }
 }

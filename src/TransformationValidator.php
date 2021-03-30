@@ -25,11 +25,17 @@ class TransformationValidator
     private function validatePhases(): void
     {
         $phases = array_map(fn(array $v) => $v['configuration']['phase'], $this->config['rows']);
+        $backends = array_map(
+            fn(array $v) => sprintf('%s-%s', $v['configuration']['backend'], $v['configuration']['type']),
+            $this->config['rows']
+        );
+
+        $uniqueBackends = array_unique($backends);
         $uniquePhases = array_unique($phases);
 
-        if (count($uniquePhases) > 1) {
+        if (count($uniquePhases) > 1 && count($uniqueBackends) > 1) {
             throw new CheckConfigException(sprintf(
-                'Transformations in the bucket "%s" don\'t have the same phase.',
+                'Cannot migrate transformations in the bucket "%s" with multiple backends and phases.',
                 $this->getTransformationName()
             ));
         }

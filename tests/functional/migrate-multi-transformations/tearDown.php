@@ -12,6 +12,8 @@ return function (DatadirTest $test): string {
     foreach ($test->getOutput() as $item) {
         $transformation = $manager->getTransformationV2($item);
         $result[] = $transformation['configuration'];
+
+        $manager->removeTransformationV2($item);
     }
 
     return (string) json_encode($result, JSON_PRETTY_PRINT);

@@ -10,7 +10,7 @@ use Keboola\StorageApi\Options\Components\ConfigurationRow;
 
 trait CreateTransformationTrait
 {
-    protected Components $components;
+    protected Components $componentsClient;
 
     public function createTransformation(
         Configuration $configuration,
@@ -31,7 +31,7 @@ trait CreateTransformationTrait
             )
         ;
 
-        $rowResult = $this->components->addConfigurationRow($row);
+        $rowResult = $this->componentsClient->addConfigurationRow($row);
         $row->setRowId((int) $rowResult['id']);
 
         return $row;

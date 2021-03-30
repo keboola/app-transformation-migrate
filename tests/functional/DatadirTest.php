@@ -7,12 +7,12 @@ namespace Keboola\TransformationMigrate\FunctionalTests;
 use Keboola\DatadirTests\DatadirTestCase;
 use Keboola\DatadirTests\DatadirTestSpecificationInterface;
 use Keboola\StorageApi\Components;
-use Keboola\TransformationMigrate\Traits\RemoveTrasformationBucketsTrait;
+use Keboola\TransformationMigrate\Traits\RemoveTrasformationTrait;
 use RuntimeException;
 
 class DatadirTest extends DatadirTestCase
 {
-    use RemoveTrasformationBucketsTrait;
+    use RemoveTrasformationTrait;
 
     protected Components $componentsClient;
 

@@ -120,10 +120,7 @@ class TransformationValidatorTest extends TestCase
                 ],
             ],
         ];
-    }
 
-    public function invalidConfigDataProvider(): Generator
-    {
         yield [
             [
                 'name' => 'test transformation bucket',
@@ -146,7 +143,34 @@ class TransformationValidatorTest extends TestCase
                     ],
                 ],
             ],
-            'Transformations in the bucket "test transformation bucket" don\'t have the same phase.',
+        ];
+    }
+
+    public function invalidConfigDataProvider(): Generator
+    {
+        yield [
+            [
+                'name' => 'test bucket',
+                'rows' => [
+                    [
+                        'name' => 'test 2',
+                        'configuration' => [
+                            'backend' => 'snowflake',
+                            'type' => 'simple',
+                            'phase' => '1',
+                        ],
+                    ],
+                    [
+                        'name' => 'test 2',
+                        'configuration' => [
+                            'backend' => 'docker',
+                            'type' => 'python',
+                            'phase' => '2',
+                        ],
+                    ],
+                ],
+            ],
+            'Cannot migrate transformations in the bucket "test bucket" with multiple backends and phases.',
         ];
     }
 }

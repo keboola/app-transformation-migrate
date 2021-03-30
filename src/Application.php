@@ -31,8 +31,10 @@ class Application
 
     public function migrateTransformationConfig(array $transformationConfig): array
     {
+        $transformationConfigRows = $this->sortConfigRowsByPhase($transformationConfig['rows']);
+
         $transformationsV2 = [];
-        foreach ($transformationConfig['rows'] as $row) {
+        foreach ($transformationConfigRows as $row) {
             $transformationKey = sprintf(
                 '%s-%s',
                 $row['configuration']['backend'],
@@ -155,5 +157,18 @@ class Application
         ];
 
         return $newConfig;
+    }
+
+    private function sortConfigRowsByPhase(array $transformationConfigRows): array
+    {
+        $phases = array_map(fn(array $v) => $v['configuration']['phase'], $transformationConfigRows);
+
+        if (count(array_unique($phases)) > 1) {
+            usort($transformationConfigRows, function (array $a, array $b): int {
+                return $a['configuration']['phase'] < $b['configuration']['phase'] ? -1 : 1;
+            });
+        }
+
+        return $transformationConfigRows;
     }
 }
