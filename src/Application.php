@@ -31,7 +31,7 @@ class Application
 
     public function migrateTransformationConfig(array $transformationConfig): array
     {
-        $transformationConfigRows = $this->sortConfigRows($transformationConfig['rows']);
+        $transformationConfigRows = $this->sortConfigRowsByPhase($transformationConfig['rows']);
 
         $transformationsV2 = [];
         foreach ($transformationConfigRows as $row) {
@@ -159,7 +159,7 @@ class Application
         return $newConfig;
     }
 
-    private function sortConfigRows(array $transformationConfigRows): array
+    private function sortConfigRowsByPhase(array $transformationConfigRows): array
     {
         $phases = array_map(fn(array $v) => $v['configuration']['phase'], $transformationConfigRows);
 
