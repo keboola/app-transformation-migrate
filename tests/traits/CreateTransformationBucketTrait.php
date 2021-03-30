@@ -10,7 +10,7 @@ use Keboola\TransformationMigrate\FunctionalTests\TestManager;
 
 trait CreateTransformationBucketTrait
 {
-    protected Components $components;
+    protected Components $componentsClient;
 
     public function createBucket(string $name = TestManager::TRANSFORMATION_BUCKET_NAME): Configuration
     {
@@ -21,7 +21,7 @@ trait CreateTransformationBucketTrait
             ->setName($name)
         ;
 
-        $transformationBucket = $this->components->addConfiguration($configuration);
+        $transformationBucket = $this->componentsClient->addConfiguration($configuration);
         $configuration->setConfigurationId((int) $transformationBucket['id']);
         return $configuration;
     }

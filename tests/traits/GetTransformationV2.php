@@ -9,11 +9,11 @@ use Keboola\TransformationMigrate\Configuration\Config;
 
 trait GetTransformationV2
 {
-    protected Components $components;
+    protected Components $componentsClient;
 
     public function getTransformationV2(array $item): array
     {
         $componentId = Config::getComponentId(sprintf('%s-%s', $item['backend'], $item['type']));
-        return $this->components->getConfiguration($componentId, $item['id']);
+        return $this->componentsClient->getConfiguration($componentId, $item['id']);
     }
 }

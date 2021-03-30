@@ -8,12 +8,14 @@ use Keboola\StorageApi\Components;
 use Keboola\TransformationMigrate\Traits\CreateTransformationBucketTrait;
 use Keboola\TransformationMigrate\Traits\CreateTransformationTrait;
 use Keboola\TransformationMigrate\Traits\GetTransformationV2;
+use Keboola\TransformationMigrate\Traits\RemoveTrasformationTrait;
 
 class TestManager
 {
     use CreateTransformationBucketTrait;
     use CreateTransformationTrait;
     use GetTransformationV2;
+    use RemoveTrasformationTrait;
 
     public const TRANSFORMATION_BUCKET_NAME = 'test_transformation_bucket';
 
@@ -21,6 +23,6 @@ class TestManager
 
     public function __construct(Components $components)
     {
-        $this->components = $components;
+        $this->componentsClient = $components;
     }
 }
