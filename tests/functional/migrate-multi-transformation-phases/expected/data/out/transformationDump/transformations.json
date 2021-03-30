@@ -1,0 +1,38 @@
+[
+  {
+    "parameters": {
+      "blocks": [
+        {
+          "name": "snflk row 2",
+          "codes": [
+            {
+              "name": "New Code",
+              "script": [
+                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "snflk row",
+          "codes": [
+            {
+              "name": "New Code",
+              "script": [
+                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "storage": {
+      "input": {
+        "tables": []
+      },
+      "output": {
+        "tables": []
+      }
+    }
+  }
+]
