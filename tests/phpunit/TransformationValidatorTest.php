@@ -73,6 +73,53 @@ class TransformationValidatorTest extends TestCase
                 ],
             ],
         ];
+
+        yield [
+            [
+                'rows' => [
+                    [
+                        'name' => 'test 2',
+                        'configuration' => [
+                            'backend' => 'snowflake',
+                            'type' => 'simple',
+                            'phase' => '1',
+                        ],
+                    ],
+                    [
+                        'name' => 'test 2',
+                        'configuration' => [
+                            'backend' => 'docker',
+                            'type' => 'python',
+                            'phase' => '1',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield [
+            [
+                'name' => 'test transformation bucket',
+                'rows' => [
+                    [
+                        'name' => 'test 2',
+                        'configuration' => [
+                            'backend' => 'snowflake',
+                            'type' => 'simple',
+                            'phase' => '1',
+                        ],
+                    ],
+                    [
+                        'name' => 'test 2',
+                        'configuration' => [
+                            'backend' => 'snowflake',
+                            'type' => 'simple2',
+                            'phase' => '1',
+                        ],
+                    ],
+                ],
+            ],
+        ];
     }
 
     public function invalidConfigDataProvider(): Generator
@@ -100,56 +147,6 @@ class TransformationValidatorTest extends TestCase
                 ],
             ],
             'Transformations in the bucket "test transformation bucket" don\'t have the same phase.',
-        ];
-
-        yield [
-            [
-                'name' => 'test transformation bucket',
-                'rows' => [
-                    [
-                        'name' => 'test 2',
-                        'configuration' => [
-                            'backend' => 'snowflake',
-                            'type' => 'simple',
-                            'phase' => '1',
-                        ],
-                    ],
-                    [
-                        'name' => 'test 2',
-                        'configuration' => [
-                            'backend' => 'docker',
-                            'type' => 'python',
-                            'phase' => '1',
-                        ],
-                    ],
-                ],
-            ],
-            'Transformations in the bucket "test transformation bucket" don\'t have the same backend.',
-        ];
-
-        yield [
-            [
-                'name' => 'test transformation bucket',
-                'rows' => [
-                    [
-                        'name' => 'test 2',
-                        'configuration' => [
-                            'backend' => 'snowflake',
-                            'type' => 'simple',
-                            'phase' => '1',
-                        ],
-                    ],
-                    [
-                        'name' => 'test 2',
-                        'configuration' => [
-                            'backend' => 'snowflake',
-                            'type' => 'simple2',
-                            'phase' => '1',
-                        ],
-                    ],
-                ],
-            ],
-            'Transformations in the bucket "test transformation bucket" don\'t have the same backend.',
         ];
     }
 }
