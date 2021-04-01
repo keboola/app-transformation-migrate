@@ -7,14 +7,14 @@ namespace Keboola\TransformationMigrate\FunctionalTests;
 use Keboola\StorageApi\Components;
 use Keboola\TransformationMigrate\Traits\CreateTransformationBucketTrait;
 use Keboola\TransformationMigrate\Traits\CreateTransformationTrait;
-use Keboola\TransformationMigrate\Traits\GetTransformationV2;
+use Keboola\TransformationMigrate\Traits\GetTransformation;
 use Keboola\TransformationMigrate\Traits\RemoveTrasformationTrait;
 
 class TestManager
 {
     use CreateTransformationBucketTrait;
     use CreateTransformationTrait;
-    use GetTransformationV2;
+    use GetTransformation;
     use RemoveTrasformationTrait;
 
     public const TRANSFORMATION_BUCKET_NAME = 'test_transformation_bucket';
