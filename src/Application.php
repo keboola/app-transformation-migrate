@@ -70,6 +70,23 @@ class Application
         return $result;
     }
 
+    public function markOldTransformationAsMigrated(array $transformationConfig): void
+    {
+        $configuration = new Configuration();
+        $configuration
+            ->setComponentId('transformation')
+            ->setConfigurationId($transformationConfig['id'])
+            ->setConfiguration(
+                array_merge(
+                    (array) $transformationConfig['configuration'],
+                    ['migrated' => true]
+                )
+            )
+        ;
+
+        $this->componentsClient->updateConfiguration($configuration);
+    }
+
     public function checkConfigIsValid(array $transformationConfig): void
     {
         $transformationValidator = new TransformationValidator($transformationConfig);

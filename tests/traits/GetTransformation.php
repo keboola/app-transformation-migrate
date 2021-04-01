@@ -7,9 +7,14 @@ namespace Keboola\TransformationMigrate\Traits;
 use Keboola\StorageApi\Components;
 use Keboola\TransformationMigrate\Configuration\Config;
 
-trait GetTransformationV2
+trait GetTransformation
 {
     protected Components $componentsClient;
+
+    public function getTransformation(int $id): array
+    {
+        return $this->componentsClient->getConfiguration('transformation', $id);
+    }
 
     public function getTransformationV2(array $item): array
     {

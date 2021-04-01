@@ -95,6 +95,11 @@ class DatadirTest extends DatadirTestCase
         return $this;
     }
 
+    public function getTransformationBucketId(): int
+    {
+        return $this->transformationBucketId;
+    }
+
     public function getComponentsClient(): Components
     {
         return $this->componentsClient;

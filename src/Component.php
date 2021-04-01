@@ -26,8 +26,9 @@ class Component extends BaseComponent
         if ($this->getConfig()->hasTransformationId()) {
             $transformationConfig = $application->getTransformationConfig($this->getConfig()->getTransformationId());
             $application->checkConfigIsValid($transformationConfig);
-
-            return $application->migrateTransformationConfig($transformationConfig);
+            $result = $application->migrateTransformationConfig($transformationConfig);
+            $application->markOldTransformationAsMigrated($transformationConfig);
+            return $result;
         }
 
         return [];
