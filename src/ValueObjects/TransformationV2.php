@@ -112,10 +112,17 @@ class TransformationV2
                     $result['where_operator'] = $v;
                     break;
                 case 'datatypes':
-                    $result['column_types'] = $this->renameInputMappingKeys($v);
+                    $columnTypes = [];
+                    foreach ($v as $key => $item) {
+                        $columnTypes[$key] = $this->renameInputMappingKeys($item);
+                    }
+                    $result['column_types'] = $columnTypes;
                     break;
                 case 'convertEmptyValuesToNull':
                     $result['convert_empty_values_to_null'] = $v;
+                    break;
+                case 'column':
+                    $result['source'] = $v;
                     break;
                 default:
                     $result[$k] = $v;
