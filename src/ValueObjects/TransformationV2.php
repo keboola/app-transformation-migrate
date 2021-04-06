@@ -111,6 +111,12 @@ class TransformationV2
                 case 'whereOperator':
                     $result['where_operator'] = $v;
                     break;
+                case 'datatypes':
+                    $result['column_types'] = $this->renameInputMappingKeys($v);
+                    break;
+                case 'convertEmptyValuesToNull':
+                    $result['convert_empty_values_to_null'] = $v;
+                    break;
                 default:
                     $result[$k] = $v;
             }
