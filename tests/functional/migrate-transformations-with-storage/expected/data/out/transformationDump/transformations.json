@@ -36,7 +36,15 @@
             "changed_since": "-10 minutes",
             "where_column": "column",
             "where_values": "values",
-            "where_operator": "operator"
+            "where_operator": "operator",
+            "column_types": {
+              "age": {
+                "source": "age",
+                "type": "VARCHAR",
+                "length": null,
+                "convert_empty_values_to_null": false
+              }
+            }
           },
           {
             "source": "inputTable2",
