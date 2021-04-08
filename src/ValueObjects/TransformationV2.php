@@ -94,11 +94,16 @@ class TransformationV2
         return $this->backend;
     }
 
-    private function renameInputMappingKeys(array $inputMappingTable): array
+    private function renameInputMappingKeys(array $inputMappingTable, ?string $keyPrefix = null): array
     {
         $result = [];
         foreach ($inputMappingTable as $k => $v) {
-            switch ($k) {
+            if ($keyPrefix) {
+                $switchKey = sprintf('%s-%s', $keyPrefix, $k);
+            } else {
+                $switchKey = $k;
+            }
+            switch ($switchKey) {
                 case 'changedSince':
                     $result['changed_since'] = $v;
                     break;
@@ -110,6 +115,19 @@ class TransformationV2
                     break;
                 case 'whereOperator':
                     $result['where_operator'] = $v;
+                    break;
+                case 'datatypes':
+                    $columnTypes = [];
+                    foreach ($v as $key => $item) {
+                        $columnTypes[$key] = $this->renameInputMappingKeys($item, $k);
+                    }
+                    $result['column_types'] = $columnTypes;
+                    break;
+                case 'datatypes-convertEmptyValuesToNull':
+                    $result['convert_empty_values_to_null'] = $v;
+                    break;
+                case 'datatypes-column':
+                    $result['source'] = $v;
                     break;
                 default:
                     $result[$k] = $v;

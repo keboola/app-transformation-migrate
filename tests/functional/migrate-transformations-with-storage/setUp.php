@@ -22,6 +22,14 @@ return function (DatadirTest $test): void {
                     'whereColumn' => 'column',
                     'whereValues' => 'values',
                     'whereOperator' => 'operator',
+                    'datatypes' => [
+                        'age' => [
+                            'column' => 'age',
+                            'type' => 'VARCHAR',
+                            'length' => null,
+                            'convertEmptyValuesToNull' => false,
+                        ],
+                    ],
                 ],
                 [
                     'source' => 'inputTable2',
