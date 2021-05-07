@@ -18,21 +18,13 @@ class Config extends BaseConfig
 
     private const R_COMPONENT_ID = 'keboola.r-transformation-v2';
 
-    public const TRANSFORMATION_TYPE_SNOWFLAKE = 'snowflake-simple';
+    private const TRANSFORMATION_TYPE_SNOWFLAKE = 'snowflake-simple';
 
-    public const TRANSFORMATION_TYPE_REDSHIFT = 'redshift-simple';
+    private const TRANSFORMATION_TYPE_REDSHIFT = 'redshift-simple';
 
-    public const TRANSFORMATION_TYPE_PYTHON = 'docker-python';
+    private const TRANSFORMATION_TYPE_PYTHON = 'docker-python';
 
-    public const TRANSFORMATION_TYPE_R = 'docker-r';
-
-    public static function getKnownBackends(): array
-    {
-        return [
-            self::TRANSFORMATION_TYPE_SNOWFLAKE,
-            self::TRANSFORMATION_TYPE_PYTHON,
-        ];
-    }
+    private const TRANSFORMATION_TYPE_R = 'docker-r';
 
     public static function getComponentId(string $transformationTypeKey): string
     {
