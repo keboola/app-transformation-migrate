@@ -1,1 +1,1 @@
-[{"type":"simple","backend":"snowflake","id":"%d"},{"type":"python","backend":"docker","id":"%d"}]
+[{"componentId":"keboola.snowflake-transformation","id":"%d"},{"componentId":"keboola.python-transformation-v2","id":"%d"}]

@@ -61,8 +61,7 @@ class Application
             );
 
             $result[] = [
-                'type' => $transformationV2->getType(),
-                'backend' => $transformationV2->getBackend(),
+                'componentId' => $transformationV2->getComponentId(),
                 'id' => $newConfig['id'],
             ];
         }
