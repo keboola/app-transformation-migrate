@@ -54,5 +54,14 @@ class TransformationValidator
                 $this->getTransformationName()
             ));
         }
+
+        array_walk($this->config['rows'], function ($v): void {
+            if (!isset($v['configuration']['id'])) {
+                throw new CheckConfigException(sprintf(
+                    'Transformation "%s" is not configured.',
+                    $v['name']
+                ));
+            }
+        });
     }
 }
