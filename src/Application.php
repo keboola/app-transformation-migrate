@@ -13,13 +13,10 @@ use Keboola\TransformationMigrate\ValueObjects\TransformationV2Code;
 
 class Application
 {
-    private Config $config;
-
     private Components $componentsClient;
 
-    public function __construct(Config $config, Components $componentsClient)
+    public function __construct(Components $componentsClient)
     {
-        $this->config = $config;
         $this->componentsClient = $componentsClient;
     }
 
@@ -160,7 +157,7 @@ class Application
             }
             $parameters['blocks'][] = $blockArr;
         }
-        $newConfig = [
+        return [
             'parameters' => $parameters,
             'storage' => [
                 'input' => [
@@ -171,8 +168,6 @@ class Application
                 ],
             ],
         ];
-
-        return $newConfig;
     }
 
     private function sortConfigRowsByPhase(array $transformationConfigRows): array

@@ -9,7 +9,7 @@ use Keboola\TransformationMigrate\Configuration\Config;
 class TransformationV2
 {
     /** @var TransformationV2Block[] $blocks */
-    private $blocks;
+    private array $blocks;
 
     private string $name;
 

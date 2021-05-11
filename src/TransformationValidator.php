@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Keboola\TransformationMigrate;
 
-use Keboola\TransformationMigrate\Configuration\Config;
 use Keboola\TransformationMigrate\Exception\CheckConfigException;
 
 class TransformationValidator
