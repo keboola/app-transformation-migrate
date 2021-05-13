@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Keboola\TransformationMigrate\ValueObjects;
 
+use Keboola\TransformationMigrate\Configuration\Config;
+
 class TransformationV2
 {
     /** @var TransformationV2Block[] $blocks */
-    private $blocks;
+    private array $blocks;
 
     private string $name;
 
@@ -92,6 +94,15 @@ class TransformationV2
     public function getBackend(): string
     {
         return $this->backend;
+    }
+
+    public function getComponentId(): string
+    {
+        return Config::getComponentId(sprintf(
+            '%s-%s',
+            $this->getBackend(),
+            $this->getType()
+        ));
     }
 
     private function renameInputMappingKeys(array $inputMappingTable, ?string $keyPrefix = null): array

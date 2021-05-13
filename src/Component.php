@@ -18,10 +18,7 @@ class Component extends BaseComponent
 
     protected function migrate(): array
     {
-        $application = new Application(
-            $this->getConfig(),
-            new Components($this->getStorageClient())
-        );
+        $application = new Application(new Components($this->getStorageClient()));
 
         if ($this->getConfig()->hasTransformationId()) {
             $transformationConfig = $application->getTransformationConfig($this->getConfig()->getTransformationId());
@@ -36,10 +33,7 @@ class Component extends BaseComponent
 
     protected function checkTransformation(): array
     {
-        $application = new Application(
-            $this->getConfig(),
-            new Components($this->getStorageClient())
-        );
+        $application = new Application(new Components($this->getStorageClient()));
 
         $transformationConfig = $application->getTransformationConfig($this->getConfig()->getTransformationId());
 

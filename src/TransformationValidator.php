@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Keboola\TransformationMigrate;
 
-use Keboola\TransformationMigrate\Configuration\Config;
 use Keboola\TransformationMigrate\Exception\CheckConfigException;
 
 class TransformationValidator
@@ -54,5 +53,14 @@ class TransformationValidator
                 $this->getTransformationName()
             ));
         }
+
+        array_walk($this->config['rows'], function ($v): void {
+            if (!isset($v['configuration']['id'])) {
+                throw new CheckConfigException(sprintf(
+                    'Transformation "%s" is not configured.',
+                    $v['name']
+                ));
+            }
+        });
     }
 }

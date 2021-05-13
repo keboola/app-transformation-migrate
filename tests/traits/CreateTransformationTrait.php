@@ -21,6 +21,7 @@ trait CreateTransformationTrait
         $row->setName($name)
             ->setConfiguration(
                 array_merge([
+                    'id' => uniqid(),
                     'backend' => 'snowflake',
                     'type' => 'simple',
                     'phase' => 1,

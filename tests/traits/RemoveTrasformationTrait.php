@@ -29,10 +29,8 @@ trait RemoveTrasformationTrait
 
     public function removeTransformationV2(array $item): void
     {
-        $componentId = Config::getComponentId(sprintf('%s-%s', $item['backend'], $item['type']));
-
-        $this->componentsClient->deleteConfiguration($componentId, $item['id']);
+        $this->componentsClient->deleteConfiguration($item['componentId'], $item['id']);
         // second call - remove permanently from trash
-        $this->componentsClient->deleteConfiguration($componentId, $item['id']);
+        $this->componentsClient->deleteConfiguration($item['componentId'], $item['id']);
     }
 }

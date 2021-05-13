@@ -1,1 +1,1 @@
-[{"type":"simple","backend":"snowflake","id":"%d"}]
+[{"componentId":"keboola.snowflake-transformation","id":"%d"}]

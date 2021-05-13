@@ -41,6 +41,7 @@ class TransformationValidatorTest extends TestCase
                 'rows' => [
                     [
                         'configuration' => [
+                            'id' => uniqid(),
                             'name' => 'test 2',
                             'backend' => 'snowflake',
                             'type' => 'simple',
@@ -56,6 +57,7 @@ class TransformationValidatorTest extends TestCase
                 'rows' => [
                     [
                         'configuration' => [
+                            'id' => uniqid(),
                             'name' => 'test 1',
                             'backend' => 'snowflake',
                             'type' => 'simple',
@@ -64,6 +66,7 @@ class TransformationValidatorTest extends TestCase
                     ],
                     [
                         'configuration' => [
+                            'id' => uniqid(),
                             'name' => 'test 2',
                             'backend' => 'snowflake',
                             'type' => 'simple',
@@ -80,6 +83,7 @@ class TransformationValidatorTest extends TestCase
                     [
                         'name' => 'test 2',
                         'configuration' => [
+                            'id' => uniqid(),
                             'backend' => 'snowflake',
                             'type' => 'simple',
                             'phase' => '1',
@@ -88,6 +92,7 @@ class TransformationValidatorTest extends TestCase
                     [
                         'name' => 'test 2',
                         'configuration' => [
+                            'id' => uniqid(),
                             'backend' => 'docker',
                             'type' => 'python',
                             'phase' => '1',
@@ -104,6 +109,7 @@ class TransformationValidatorTest extends TestCase
                     [
                         'name' => 'test 2',
                         'configuration' => [
+                            'id' => uniqid(),
                             'backend' => 'snowflake',
                             'type' => 'simple',
                             'phase' => '1',
@@ -112,6 +118,7 @@ class TransformationValidatorTest extends TestCase
                     [
                         'name' => 'test 2',
                         'configuration' => [
+                            'id' => uniqid(),
                             'backend' => 'snowflake',
                             'type' => 'simple2',
                             'phase' => '1',
@@ -128,6 +135,7 @@ class TransformationValidatorTest extends TestCase
                     [
                         'name' => 'test 2',
                         'configuration' => [
+                            'id' => uniqid(),
                             'backend' => 'snowflake',
                             'type' => 'simple',
                             'phase' => '1',
@@ -136,6 +144,7 @@ class TransformationValidatorTest extends TestCase
                     [
                         'name' => 'test 2',
                         'configuration' => [
+                            'id' => uniqid(),
                             'backend' => 'snowflake',
                             'type' => 'simple',
                             'phase' => '2',
@@ -155,6 +164,7 @@ class TransformationValidatorTest extends TestCase
                     [
                         'name' => 'test 2',
                         'configuration' => [
+                            'id' => uniqid(),
                             'backend' => 'snowflake',
                             'type' => 'simple',
                             'phase' => '1',
@@ -163,6 +173,7 @@ class TransformationValidatorTest extends TestCase
                     [
                         'name' => 'test 2',
                         'configuration' => [
+                            'id' => uniqid(),
                             'backend' => 'docker',
                             'type' => 'python',
                             'phase' => '2',
@@ -171,6 +182,22 @@ class TransformationValidatorTest extends TestCase
                 ],
             ],
             'Cannot migrate transformations in the bucket "test bucket" with multiple backends and phases.',
+        ];
+
+        yield [
+            [
+                'name' => 'test bucket',
+                'rows' => [
+                    [
+                        'name' => 'test',
+                        'configuration' => [
+                            'backend' => 'snowflake',
+                            'type' => 'simple',
+                        ],
+                    ],
+                ],
+            ],
+            'Transformation "test" is not configured.',
         ];
     }
 }
