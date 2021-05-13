@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Keboola\TransformationMigrate;
 
+use Keboola\Component\UserException;
+use Keboola\TransformationMigrate\Configuration\Config;
 use Keboola\TransformationMigrate\Exception\CheckConfigException;
 
 class TransformationValidator
@@ -17,6 +19,7 @@ class TransformationValidator
 
     public function validate(): void
     {
+        $this->validateSupportedBackends();
         $this->validateBucketRows();
         $this->validatePhases();
     }
@@ -62,5 +65,19 @@ class TransformationValidator
                 ));
             }
         });
+    }
+
+    private function validateSupportedBackends(): void
+    {
+        try {
+            array_map(
+                fn(array $v) => Config::getComponentId(
+                    sprintf('%s-%s', $v['configuration']['backend'], $v['configuration']['type'])
+                ),
+                $this->config['rows']
+            );
+        } catch (UserException $e) {
+            throw new CheckConfigException($e->getMessage(), 0, $e);
+        }
     }
 }
