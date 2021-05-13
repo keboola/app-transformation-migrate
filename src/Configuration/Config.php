@@ -6,6 +6,7 @@ namespace Keboola\TransformationMigrate\Configuration;
 
 use InvalidArgumentException;
 use Keboola\Component\Config\BaseConfig;
+use Keboola\Component\UserException;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 class Config extends BaseConfig
@@ -38,8 +39,8 @@ class Config extends BaseConfig
             case Config::TRANSFORMATION_TYPE_REDSHIFT:
                 return self::REDSHIFT_COMPONENT_ID;
             default:
-                throw new InvalidConfigurationException(
-                    sprintf('Unknown backend type "%s"', $transformationTypeKey)
+                throw new UserException(
+                    sprintf('Unsupported backend type "%s".', $transformationTypeKey)
                 );
         }
     }

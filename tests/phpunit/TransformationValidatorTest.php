@@ -120,7 +120,7 @@ class TransformationValidatorTest extends TestCase
                         'configuration' => [
                             'id' => uniqid(),
                             'backend' => 'snowflake',
-                            'type' => 'simple2',
+                            'type' => 'simple',
                             'phase' => '1',
                         ],
                     ],
@@ -198,6 +198,22 @@ class TransformationValidatorTest extends TestCase
                 ],
             ],
             'Transformation "test" is not configured.',
+        ];
+
+        yield [
+            [
+                'name' => 'test bucket',
+                'rows' => [
+                    [
+                        'name' => 'test',
+                        'configuration' => [
+                            'backend' => 'docker',
+                            'type' => 'julia',
+                        ],
+                    ],
+                ],
+            ],
+            'Unsupported backend type "docker-julia".',
         ];
     }
 }
