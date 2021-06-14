@@ -126,6 +126,10 @@ class Application
             $transformationV2->addPackages($row['configuration']['packages']);
         }
 
+        if (isset($row['configuration']['tags'])) {
+            $transformationV2->addFileTags($row['configuration']['tags']);
+        }
+
         $code = new TransformationV2Code();
         foreach ($row['configuration']['queries'] as $query) {
             $code->addScript($query);
@@ -157,12 +161,19 @@ class Application
             }
             $parameters['blocks'][] = $blockArr;
         }
+
+        $inputMapping = [
+            'tables' => array_values($transformationV2->getInputMappingTables()),
+        ];
+
+        if ($transformationV2->hasFileTags()) {
+            $inputMapping['files'] = [['tags' => array_values($transformationV2->getFileTags())]];
+        }
+
         return [
             'parameters' => $parameters,
             'storage' => [
-                'input' => [
-                    'tables' => array_values($transformationV2->getInputMappingTables()),
-                ],
+                'input' => $inputMapping,
                 'output' => [
                     'tables' => array_values($transformationV2->getOutputMappingTables()),
                 ],
