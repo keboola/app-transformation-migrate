@@ -22,6 +22,7 @@ return function (DatadirTest $test): void {
                     'whereColumn' => 'column',
                     'whereValues' => 'values',
                     'whereOperator' => 'operator',
+                    'loadType' => 'clone',
                     'datatypes' => [
                         'age' => [
                             'column' => 'age',
