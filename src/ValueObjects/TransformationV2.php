@@ -23,6 +23,8 @@ class TransformationV2
 
     private array $packages = [];
 
+    private array $fileTags = [];
+
     public function __construct(string $name, string $type, string $backend)
     {
         $this->name = $name;
@@ -56,14 +58,33 @@ class TransformationV2
         });
     }
 
+    public function addFileTags(array $fileTags): void
+    {
+        array_walk($fileTags, function (string $v): void {
+            if (!in_array($v, $this->fileTags)) {
+                $this->fileTags[] = $v;
+            }
+        });
+    }
+
     public function hasPackages(): bool
     {
         return $this->packages !== [];
     }
 
+    public function hasFileTags(): bool
+    {
+        return $this->fileTags !== [];
+    }
+
     public function getPackages(): array
     {
         return $this->packages;
+    }
+
+    public function getFileTags(): array
+    {
+        return $this->fileTags;
     }
 
     public function getBlocks(): array
