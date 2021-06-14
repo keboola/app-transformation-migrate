@@ -115,6 +115,8 @@ class TransformationV2
                 $switchKey = $k;
             }
             switch ($switchKey) {
+                case 'loadType': // skip this config
+                    continue 2;
                 case 'changedSince':
                     $result['changed_since'] = $v;
                     break;
