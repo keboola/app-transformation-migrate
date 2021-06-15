@@ -19,6 +19,7 @@ return function (DatadirTest $test): string {
         Assert::assertArrayHasKey('configuration', $oldTransformation);
         Assert::assertArrayHasKey('migrated', $oldTransformation['configuration']);
         Assert::assertTrue($oldTransformation['configuration']['migrated']);
+        Assert::assertEquals('Mark as migrated', $oldTransformation['currentVersion']['changeDescription']);
 
         $manager->removeTransformationV2($item);
     }
