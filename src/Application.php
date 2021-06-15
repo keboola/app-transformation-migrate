@@ -70,6 +70,7 @@ class Application
     {
         $configuration = new Configuration();
         $configuration
+            ->setChangeDescription('Mark as migrated')
             ->setComponentId('transformation')
             ->setConfigurationId($transformationConfig['id'])
             ->setConfiguration(
