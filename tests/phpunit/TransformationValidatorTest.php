@@ -46,6 +46,7 @@ class TransformationValidatorTest extends TestCase
                             'backend' => 'snowflake',
                             'type' => 'simple',
                             'phase' => '1',
+                            'queries' => [],
                         ],
                     ],
                 ],
@@ -62,6 +63,7 @@ class TransformationValidatorTest extends TestCase
                             'backend' => 'snowflake',
                             'type' => 'simple',
                             'phase' => '1',
+                            'queries' => [],
                         ],
                     ],
                     [
@@ -71,6 +73,7 @@ class TransformationValidatorTest extends TestCase
                             'backend' => 'snowflake',
                             'type' => 'simple',
                             'phase' => '1',
+                            'queries' => [],
                         ],
                     ],
                 ],
@@ -87,6 +90,7 @@ class TransformationValidatorTest extends TestCase
                             'backend' => 'snowflake',
                             'type' => 'simple',
                             'phase' => '1',
+                            'queries' => [],
                         ],
                     ],
                     [
@@ -96,6 +100,7 @@ class TransformationValidatorTest extends TestCase
                             'backend' => 'docker',
                             'type' => 'python',
                             'phase' => '1',
+                            'queries' => [],
                         ],
                     ],
                 ],
@@ -113,6 +118,7 @@ class TransformationValidatorTest extends TestCase
                             'backend' => 'snowflake',
                             'type' => 'simple',
                             'phase' => '1',
+                            'queries' => [],
                         ],
                     ],
                     [
@@ -122,6 +128,7 @@ class TransformationValidatorTest extends TestCase
                             'backend' => 'snowflake',
                             'type' => 'simple',
                             'phase' => '1',
+                            'queries' => [],
                         ],
                     ],
                 ],
@@ -139,6 +146,7 @@ class TransformationValidatorTest extends TestCase
                             'backend' => 'snowflake',
                             'type' => 'simple',
                             'phase' => '1',
+                            'queries' => [],
                         ],
                     ],
                     [
@@ -148,6 +156,7 @@ class TransformationValidatorTest extends TestCase
                             'backend' => 'snowflake',
                             'type' => 'simple',
                             'phase' => '2',
+                            'queries' => [],
                         ],
                     ],
                 ],
@@ -168,6 +177,7 @@ class TransformationValidatorTest extends TestCase
                             'backend' => 'snowflake',
                             'type' => 'simple',
                             'phase' => '1',
+                            'queries' => [],
                         ],
                     ],
                     [
@@ -177,6 +187,7 @@ class TransformationValidatorTest extends TestCase
                             'backend' => 'docker',
                             'type' => 'python',
                             'phase' => '2',
+                            'queries' => [],
                         ],
                     ],
                 ],
@@ -197,7 +208,7 @@ class TransformationValidatorTest extends TestCase
                     ],
                 ],
             ],
-            'Transformation "test" is not configured.',
+            'Transformation "test" is empty. Please add querries or mapping to continue with migration.',
         ];
 
         yield [
