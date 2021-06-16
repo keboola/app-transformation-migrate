@@ -1,6 +1,7 @@
 name: Github actions
 on: push
 env:
+  APP_IMAGE: keboola-component
   KBC_DEVELOPERPORTAL_APP: keboola.app-transformation-migrate
   KBC_DEVELOPERPORTAL_USERNAME: keboola+app_transformation_migrate_github_actions
   KBC_DEVELOPERPORTAL_VENDOR: keboola
