@@ -39,13 +39,13 @@ class TransformationV2
 
     public function addInputMappingTable(array $inputMappingTable): void
     {
-        $this->inputMappingTables[$inputMappingTable['source']] =
+        $this->inputMappingTables[$inputMappingTable['destination']] =
             $this->renameInputMappingKeys($inputMappingTable);
     }
 
     public function addOutputMappingTable(array $outputMappingTable): void
     {
-        $this->outputMappingTables[$outputMappingTable['destination']] =
+        $this->outputMappingTables[$outputMappingTable['source']] =
             $this->renameOutputMappingKeys($outputMappingTable);
     }
 
