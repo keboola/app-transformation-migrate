@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Keboola\TransformationMigrate;
 
 use Keboola\Component\BaseComponent;
-use Keboola\StorageApi\Client;
 use Keboola\StorageApi\Components;
 use Keboola\TransformationMigrate\Configuration\Config;
 use Keboola\TransformationMigrate\Configuration\ConfigDefinition;
@@ -18,7 +17,7 @@ class Component extends BaseComponent
 
     protected function migrate(): array
     {
-        $application = new Application(new Components($this->getStorageClient()));
+        $application = $this->getApplication();
 
         if ($this->getConfig()->hasTransformationId()) {
             $transformationConfig = $application->getTransformationConfig($this->getConfig()->getTransformationId());
@@ -33,7 +32,7 @@ class Component extends BaseComponent
 
     protected function checkTransformation(): array
     {
-        $application = new Application(new Components($this->getStorageClient()));
+        $application = $this->getApplication();
 
         $transformationConfig = $application->getTransformationConfig($this->getConfig()->getTransformationId());
 
@@ -69,13 +68,15 @@ class Component extends BaseComponent
         return ConfigDefinition::class;
     }
 
-    private function getStorageClient(): Client
+    private function getApplication(): Application
     {
-        return new Client(
-            [
-                'url' => $this->getConfig()->getKbcUrl(),
-                'token' => $this->getConfig()->getKbcStorageToken(),
-            ]
-        );
+        $branchId = null;
+        if (getenv('KBC_BRANCHID')) {
+            $branchId = (string) getenv('KBC_BRANCHID');
+        }
+
+        $storageApiClient = StorageApiClientFactory::getClient($this->getConfig(), $branchId);
+
+        return new Application(new Components($storageApiClient));
     }
 }
