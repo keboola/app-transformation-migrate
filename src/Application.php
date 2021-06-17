@@ -132,7 +132,11 @@ class Application
         }
 
         $code = new TransformationV2Code();
-        $code->setName($row['name']);
+        $transformationName = $row['name'];
+        if (empty($transformationName) && !empty($row['configuration']['name'])) {
+            $transformationName = $row['configuration']['name'];
+        }
+        $code->setName($transformationName);
         foreach ($row['configuration']['queries'] as $query) {
             $code->addScript($query);
         }
