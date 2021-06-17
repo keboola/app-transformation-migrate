@@ -14,23 +14,25 @@ trait CreateTransformationTrait
 
     public function createTransformation(
         Configuration $configuration,
-        string $name,
+        ?string $name,
         array $config = []
     ): ConfigurationRow {
         $row = new ConfigurationRow($configuration);
-        $row->setName($name)
-            ->setConfiguration(
-                array_merge([
-                    'id' => uniqid(),
-                    'backend' => 'snowflake',
-                    'type' => 'simple',
-                    'phase' => 1,
-                    'queries' => [
-                        'CREATE TABLE "out_table" AS SELECT * FROM "in_table";',
-                    ],
-                ], $config)
-            )
-        ;
+        if ($name) {
+            $row->setName($name);
+        }
+
+        $row->setConfiguration(
+            array_merge([
+                'id' => uniqid(),
+                'backend' => 'snowflake',
+                'type' => 'simple',
+                'phase' => 1,
+                'queries' => [
+                    'CREATE TABLE "out_table" AS SELECT * FROM "in_table";',
+                ],
+            ], $config)
+        );
 
         $rowResult = $this->componentsClient->addConfigurationRow($row);
         $row->setRowId((int) $rowResult['id']);

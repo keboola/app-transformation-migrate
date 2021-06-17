@@ -11,9 +11,10 @@ return function (DatadirTest $test): void {
 
     $manager->createTransformation(
         $configuration,
-        'snflk row',
+        null,
         [
             'phase' => 2,
+            'name' => 'snflk row',
         ]
     );
 
