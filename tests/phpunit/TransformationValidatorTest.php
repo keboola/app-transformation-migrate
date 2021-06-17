@@ -208,7 +208,7 @@ class TransformationValidatorTest extends TestCase
                     ],
                 ],
             ],
-            'Transformation "test" is empty. Please add querries or mapping to continue with migration.',
+            'Transformation "test" is empty. Please add queries or mapping to continue with migration.',
         ];
 
         yield [
