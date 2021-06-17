@@ -3,10 +3,10 @@
     "parameters": {
       "blocks": [
         {
-          "name": "snflk row",
+          "name": "Phase 1",
           "codes": [
             {
-              "name": "New Code",
+              "name": "snflk row",
               "script": [
                 "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
               ]
@@ -28,10 +28,10 @@
     "parameters": {
       "blocks": [
         {
-          "name": "python",
+          "name": "Phase 1",
           "codes": [
             {
-              "name": "New Code",
+              "name": "python",
               "script": [
                 "print(1)"
               ]

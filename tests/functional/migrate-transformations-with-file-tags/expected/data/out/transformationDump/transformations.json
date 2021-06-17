@@ -3,21 +3,16 @@
         "parameters": {
             "blocks": [
                 {
-                    "name": "python row",
+                    "name": "Phase 1",
                     "codes": [
                         {
-                            "name": "New Code",
+                            "name": "python row",
                             "script": [
                                 "print(1)"
                             ]
-                        }
-                    ]
-                },
-                {
-                    "name": "python row 2",
-                    "codes": [
+                        },
                         {
-                            "name": "New Code",
+                            "name": "python row 2",
                             "script": [
                                 "print(2)"
                             ]

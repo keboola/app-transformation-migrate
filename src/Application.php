@@ -132,13 +132,19 @@ class Application
         }
 
         $code = new TransformationV2Code();
+        $code->setName($row['name']);
         foreach ($row['configuration']['queries'] as $query) {
             $code->addScript($query);
         }
-        $block = new TransformationV2Block();
-        $block->setName($row['name']);
-        $block->addCode($code);
-        $transformationV2->addBlock($block);
+        $phase = (int) $row['configuration']['phase'];
+        $block = $transformationV2->getBlockByPhase($phase);
+        if (!$block) {
+            $block = new TransformationV2Block($phase);
+            $block->addCode($code);
+            $transformationV2->addBlock($block);
+        } else {
+            $block->addCode($code);
+        }
     }
 
     private function prepareTransformationConfigV2(TransformationV2 $transformationV2): array
