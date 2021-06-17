@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Keboola\TransformationMigrate;
 
 use Keboola\Component\BaseComponent;
+use Keboola\StorageApi\BranchAwareClient;
 use Keboola\StorageApi\Client;
 use Keboola\StorageApi\Components;
 use Keboola\TransformationMigrate\Configuration\Config;
@@ -71,6 +72,17 @@ class Component extends BaseComponent
 
     private function getStorageClient(): Client
     {
+        $branchId = getenv('KBC_BRANCHID');
+        if ($branchId) {
+            return new BranchAwareClient(
+                $branchId,
+                [
+                    'url' => $this->getConfig()->getKbcUrl(),
+                    'token' => $this->getConfig()->getKbcStorageToken(),
+                ]
+            );
+        }
+
         return new Client(
             [
                 'url' => $this->getConfig()->getKbcUrl(),
