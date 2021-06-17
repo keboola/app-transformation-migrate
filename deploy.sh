@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+GITHUB_TAG=${GITHUB_REF/refs\/tags\//}
+
 # Obtain the component repository and log in
 docker pull quay.io/keboola/developer-portal-cli-v2:latest
 export REPOSITORY=`docker run --rm  \
