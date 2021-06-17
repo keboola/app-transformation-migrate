@@ -10,6 +10,8 @@ use Keboola\TransformationMigrate\Exception\CheckConfigException;
 
 class TransformationValidator
 {
+    private const REQUIRED_ROWS_CONFIG = ['phase', 'backend', 'type', 'queries'];
+
     private array $config;
 
     public function __construct(array $config)
@@ -58,9 +60,15 @@ class TransformationValidator
         }
 
         array_walk($this->config['rows'], function ($v): void {
-            if (!isset($v['configuration']['id'])) {
+            $missingConfig = [];
+            foreach (self::REQUIRED_ROWS_CONFIG as $item) {
+                if (!isset($v['configuration'][$item])) {
+                    $missingConfig[] = $item;
+                }
+            }
+            if ($missingConfig) {
                 throw new CheckConfigException(sprintf(
-                    'Transformation "%s" is not configured.',
+                    'Transformation "%s" is empty. Please add querries or mapping to continue with migration.',
                     $v['name']
                 ));
             }
