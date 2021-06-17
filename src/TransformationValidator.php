@@ -68,7 +68,7 @@ class TransformationValidator
             }
             if ($missingConfig) {
                 throw new CheckConfigException(sprintf(
-                    'Transformation "%s" is empty. Please add querries or mapping to continue with migration.',
+                    'Transformation "%s" is empty. Please add queries or mapping to continue with migration.',
                     $v['name']
                 ));
             }
