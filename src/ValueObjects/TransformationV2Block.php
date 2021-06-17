@@ -6,16 +6,15 @@ namespace Keboola\TransformationMigrate\ValueObjects;
 
 class TransformationV2Block
 {
-    private string $name = 'Block';
+    private int $phase;
+
+    public function __construct(int $phase)
+    {
+        $this->phase = $phase;
+    }
 
     /** @var TransformationV2Code[] $codes */
     private $codes = [];
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-        return $this;
-    }
 
     public function addCode(TransformationV2Code $code): void
     {
@@ -24,7 +23,12 @@ class TransformationV2Block
 
     public function getName(): string
     {
-        return $this->name;
+        return sprintf('Phase %s', $this->phase);
+    }
+
+    public function getPhase(): int
+    {
+        return $this->phase;
     }
 
     /**

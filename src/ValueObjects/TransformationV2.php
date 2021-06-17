@@ -9,7 +9,7 @@ use Keboola\TransformationMigrate\Configuration\Config;
 class TransformationV2
 {
     /** @var TransformationV2Block[] $blocks */
-    private array $blocks;
+    private array $blocks = [];
 
     private string $name;
 
@@ -124,6 +124,17 @@ class TransformationV2
             $this->getBackend(),
             $this->getType()
         ));
+    }
+
+    public function getBlockByPhase(int $phase): ?TransformationV2Block
+    {
+        foreach ($this->getBlocks() as $block) {
+            if ($block->getPhase() === $phase) {
+                return $block;
+            }
+        }
+
+        return null;
     }
 
     private function renameInputMappingKeys(array $inputMappingTable, ?string $keyPrefix = null): array
