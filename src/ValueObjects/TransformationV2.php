@@ -13,6 +13,8 @@ class TransformationV2
 
     private string $name;
 
+    private array $descriptions = [];
+
     private string $type;
 
     private string $backend;
@@ -65,6 +67,12 @@ class TransformationV2
                 $this->fileTags[] = $v;
             }
         });
+    }
+
+    public function addDescription(string $description): self
+    {
+        $this->descriptions[] = $description;
+        return $this;
     }
 
     public function hasPackages(): bool
@@ -135,6 +143,11 @@ class TransformationV2
         }
 
         return null;
+    }
+
+    public function getDescription(): string
+    {
+        return implode("\n\n", $this->descriptions);
     }
 
     private function renameInputMappingKeys(array $inputMappingTable, ?string $keyPrefix = null): array

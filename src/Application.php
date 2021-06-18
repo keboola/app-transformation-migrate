@@ -44,6 +44,9 @@ class Application
                     $row['configuration']['type'],
                     $row['configuration']['backend']
                 );
+                if (!empty($transformationConfig['description'])) {
+                    $transformationsV2[$transformationKey]->addDescription($transformationConfig['description']);
+                }
             }
 
             $this->processRow($row, $transformationsV2[$transformationKey]);
@@ -54,6 +57,7 @@ class Application
             $newConfig = $this->createTransformationConfig(
                 $transformationTypeKey,
                 $transformationV2->getName(),
+                $transformationV2->getDescription(),
                 $this->prepareTransformationConfigV2($transformationV2)
             );
 
@@ -99,11 +103,16 @@ class Application
         return $config;
     }
 
-    private function createTransformationConfig(string $transformationTypeKey, string $name, array $config): array
-    {
+    private function createTransformationConfig(
+        string $transformationTypeKey,
+        string $name,
+        string $description,
+        array $config
+    ): array {
         $options = new Configuration();
         $options
             ->setName($name)
+            ->setDescription($description)
             ->setConfiguration($config)
             ->setComponentId(Config::getComponentId($transformationTypeKey))
         ;
@@ -129,6 +138,10 @@ class Application
 
         if (isset($row['configuration']['tags'])) {
             $transformationV2->addFileTags($row['configuration']['tags']);
+        }
+
+        if (!empty($row['description'])) {
+            $transformationV2->addDescription($row['description']);
         }
 
         $code = new TransformationV2Code();
