@@ -15,11 +15,15 @@ trait CreateTransformationTrait
     public function createTransformation(
         Configuration $configuration,
         ?string $name,
+        ?string $description = null,
         array $config = []
     ): ConfigurationRow {
         $row = new ConfigurationRow($configuration);
         if ($name) {
             $row->setName($name);
+        }
+        if ($description) {
+            $row->setDescription($description);
         }
 
         $row->setConfiguration(
