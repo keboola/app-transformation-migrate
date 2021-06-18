@@ -12,6 +12,7 @@ return function (DatadirTest $test): void {
     $manager->createTransformation(
         $configuration,
         'snflk row',
+        null,
         [
             'input' => [
                 [
@@ -60,6 +61,7 @@ return function (DatadirTest $test): void {
     $manager->createTransformation(
         $configuration,
         'snflk row 2',
+        null,
         [
             'input' => [
                 [

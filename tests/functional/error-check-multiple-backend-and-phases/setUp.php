@@ -17,6 +17,7 @@ return function (DatadirTest $test): void {
     $manager->createTransformation(
         $configuration,
         'snflk row',
+        null,
         [
             'backend' => 'docker',
             'type' => 'python',

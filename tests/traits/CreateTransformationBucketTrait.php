@@ -12,14 +12,20 @@ trait CreateTransformationBucketTrait
 {
     protected Components $componentsClient;
 
-    public function createBucket(string $name = TestManager::TRANSFORMATION_BUCKET_NAME): Configuration
-    {
+    public function createBucket(
+        string $name = TestManager::TRANSFORMATION_BUCKET_NAME,
+        ?string $description = null
+    ): Configuration {
         $configuration = new Configuration();
         $configuration
             ->setComponentId('transformation')
             ->setChangeDescription('Create test transformation configuration for migration app')
             ->setName($name)
         ;
+
+        if ($description) {
+            $configuration->setDescription($description);
+        }
 
         $transformationBucket = $this->componentsClient->addConfiguration($configuration);
         $configuration->setConfigurationId((int) $transformationBucket['id']);
