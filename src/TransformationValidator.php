@@ -68,8 +68,9 @@ class TransformationValidator
             }
             if ($missingConfig) {
                 throw new CheckConfigException(sprintf(
-                    'Transformation "%s" is empty. Please add queries or mapping to continue with migration.',
-                    $v['name']
+                    'Transformation "%s" is empty. Please add %s or mapping to continue with migration.',
+                    $v['name'],
+                    in_array($v['configuration']['type'], ['python', 'r']) ? 'scripts' : 'queries'
                 ));
             }
         });

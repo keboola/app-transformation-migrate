@@ -219,6 +219,22 @@ class TransformationValidatorTest extends TestCase
                         'name' => 'test',
                         'configuration' => [
                             'backend' => 'docker',
+                            'type' => 'python',
+                        ],
+                    ],
+                ],
+            ],
+            'Transformation "test" is empty. Please add scripts or mapping to continue with migration.',
+        ];
+
+        yield [
+            [
+                'name' => 'test bucket',
+                'rows' => [
+                    [
+                        'name' => 'test',
+                        'configuration' => [
+                            'backend' => 'docker',
                             'type' => 'julia',
                         ],
                     ],
