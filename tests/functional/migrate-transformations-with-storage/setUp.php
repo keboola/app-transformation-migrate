@@ -18,7 +18,7 @@ return function (DatadirTest $test): void {
                 [
                     'source' => 'inputTable1',
                     'destination' => 'inputTable1',
-                    'columns' => [],
+                    'columns' => ['age'],
                     'changedSince' => '-10 minutes',
                     'whereColumn' => 'column',
                     'whereValues' => 'values',
