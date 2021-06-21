@@ -41,8 +41,10 @@ class TransformationV2
 
     public function addInputMappingTable(array $inputMappingTable): void
     {
+        $newInputMappingTable = $this->replaceInputMappingValues($inputMappingTable);
+
         $this->inputMappingTables[$inputMappingTable['destination']] =
-            $this->renameInputMappingKeys($inputMappingTable);
+            $this->renameInputMappingKeys($newInputMappingTable);
     }
 
     public function addOutputMappingTable(array $outputMappingTable): void
@@ -148,6 +150,15 @@ class TransformationV2
     public function getDescription(): string
     {
         return implode("\n\n", $this->descriptions);
+    }
+
+    private function replaceInputMappingValues(array $inputMappingTable): array
+    {
+        if (isset($inputMappingTable['loadType']) && $inputMappingTable['loadType'] === 'clone') {
+            $inputMappingTable['datatypes'] = [];
+            $inputMappingTable['columns'] = [];
+        }
+        return $inputMappingTable;
     }
 
     private function renameInputMappingKeys(array $inputMappingTable, ?string $keyPrefix = null): array
