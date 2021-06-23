@@ -35,6 +35,21 @@
             "column_types": []
           },
           {
+            "source": "inputTable3",
+            "destination": "inputTable3",
+            "columns": [
+              "age"
+            ],
+            "column_types": [
+              {
+                "source": "age",
+                "type": "VARCHAR",
+                "length": null,
+                "convert_empty_values_to_null": false
+              }
+            ]
+          },
+          {
             "source": "inputTable2",
             "destination": "inputTable2",
             "columns": []

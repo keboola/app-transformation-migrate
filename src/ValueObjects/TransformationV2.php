@@ -187,8 +187,8 @@ class TransformationV2
                     break;
                 case 'datatypes':
                     $columnTypes = [];
-                    foreach ($v as $key => $item) {
-                        $columnTypes[$key] = $this->renameInputMappingKeys($item, $k);
+                    foreach ($v as $item) {
+                        $columnTypes[] = $this->renameInputMappingKeys($item, $k);
                     }
                     $result['column_types'] = $columnTypes;
                     break;
