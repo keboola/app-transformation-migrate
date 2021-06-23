@@ -34,6 +34,19 @@ return function (DatadirTest $test): void {
                     ],
                 ],
                 [
+                    'source' => 'inputTable3',
+                    'destination' => 'inputTable3',
+                    'columns' => ['age'],
+                    'datatypes' => [
+                        'age' => [
+                            'column' => 'age',
+                            'type' => 'VARCHAR',
+                            'length' => null,
+                            'convertEmptyValuesToNull' => false,
+                        ],
+                    ],
+                ],
+                [
                     'source' => 'inputTable2',
                     'destination' => 'inputTable2',
                     'columns' => [],
