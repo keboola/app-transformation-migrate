@@ -11,10 +11,10 @@ class ClientFactory
 {
     public static function createComponentsClient(): Components
     {
-        return new Components(self::getClient());
+        return new Components(self::createStorageClient());
     }
 
-    private static function getClient(): Client
+    public static function createStorageClient(): Client
     {
         return new Client([
             'url' => getenv('KBC_URL'),
