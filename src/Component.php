@@ -77,6 +77,6 @@ class Component extends BaseComponent
 
         $storageApiClient = StorageApiClientFactory::getClient($this->getConfig(), $branchId);
 
-        return new Application(new Components($storageApiClient));
+        return new Application($storageApiClient);
     }
 }
