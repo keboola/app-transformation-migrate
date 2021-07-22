@@ -30,13 +30,13 @@ class Application
         $transformationConfig = $this->componentsClient->getConfiguration('transformation', $transformationId);
         $transformationConfig = $this->removeDisableTransformation($transformationConfig);
         $transformationConfig = $this->checkAndCompletionInputMapping($transformationConfig);
-
+        $transformationConfig = $this->sortByDependencies($transformationConfig);
         return $transformationConfig;
     }
 
     public function migrateTransformationConfig(array $transformationConfig): array
     {
-        $transformationConfigRows = $this->sortConfigRowsByPhase($transformationConfig['rows']);
+        $transformationConfigRows = $transformationConfig['rows'];
 
         $transformationsV2 = [];
         foreach ($transformationConfigRows as $row) {
@@ -213,19 +213,6 @@ class Application
         ];
     }
 
-    private function sortConfigRowsByPhase(array $transformationConfigRows): array
-    {
-        $phases = array_map(fn(array $v) => $v['configuration']['phase'], $transformationConfigRows);
-
-        if (count(array_unique($phases)) > 1) {
-            usort($transformationConfigRows, function (array $a, array $b): int {
-                return $a['configuration']['phase'] < $b['configuration']['phase'] ? -1 : 1;
-            });
-        }
-
-        return $transformationConfigRows;
-    }
-
     private function checkAndCompletionInputMapping(array $transformationConfig): array
     {
         foreach ($transformationConfig['rows'] as $rowKey => $row) {
@@ -288,6 +275,63 @@ class Application
                 }
             }
         }
+        return $transformationConfig;
+    }
+
+    private function sortByDependencies(array $transformationConfig): array
+    {
+        $rows = [];
+        foreach ($transformationConfig['rows'] as $row) {
+            $rows[$row['configuration']['phase']][$row['id']] = $row;
+        }
+        ksort($rows);
+
+        $result = [];
+        foreach ($rows as $phaseRows) {
+            $phaseResult = [];
+            $writeOutputRow = function (?array $writeBeforeValues = null, array $row) use (&$phaseResult): void {
+                if (!$writeBeforeValues) {
+                    $phaseResult[] = $row;
+                    return;
+                }
+                $beforeKey = null;
+                foreach ($writeBeforeValues as $writeBeforeValue) {
+                    $actualKey = array_search($writeBeforeValue, array_map(fn($v) => $v['id'], $phaseResult));
+                    if ($actualKey === false) {
+                        continue;
+                    }
+                    $beforeKey = is_null($beforeKey) ? $actualKey : min($beforeKey, $actualKey);
+                }
+
+                if (is_null($beforeKey)) {
+                    $phaseResult[] = $row;
+                    return;
+                }
+
+                for ($i = count($phaseResult); $i > $beforeKey; $i--) {
+                    $phaseResult[$i] = $phaseResult[$i-1];
+                    unset($phaseResult[$i-1]);
+                }
+
+                $phaseResult[$beforeKey] = $row;
+                ksort($phaseResult);
+            };
+
+            $dependentSettings = false;
+            foreach ($phaseRows as $phaseRow) {
+                if (!$dependentSettings) {
+                    $dependentSettings = !empty($phaseRow['configuration']['requires']);
+                }
+                $writeOutputRow($phaseRow['configuration']['requires'] ?? null, $phaseRow);
+            }
+
+            $result = array_merge(
+                $result,
+                $dependentSettings ? array_reverse($phaseResult) : $phaseResult
+            );
+        }
+
+        $transformationConfig['rows'] = $result;
         return $transformationConfig;
     }
 }
