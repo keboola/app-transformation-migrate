@@ -193,7 +193,7 @@ class TransformationV2
                     $result['column_types'] = $columnTypes;
                     break;
                 case 'datatypes-convertEmptyValuesToNull':
-                    $result['convert_empty_values_to_null'] = $v;
+                    $result['convert_empty_values_to_null'] = (bool) $v;
                     break;
                 case 'datatypes-column':
                     $result['source'] = $v;
