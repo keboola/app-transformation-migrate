@@ -271,7 +271,7 @@ class Application
                         $newColumn = [
                             'type' => $storageColumnMetadata['KBC.datatype.basetype'] ?? 'VARCHAR',
                             'column' => $missingColumn,
-                            'length' => $storageColumnMetadata['KBC.datatype.length'] ?? 255,
+                            'length' => $storageColumnMetadata['KBC.datatype.length'] ?? null,
                             'convertEmptyValuesToNull' => $storageColumnMetadata['KBC.datatype.nullable'] ?? true,
                         ];
                     }
