@@ -233,51 +233,56 @@ class Application
                 continue;
             }
             foreach ($row['configuration']['input'] as $itemKey => $item) {
-                if (!empty($item['datatypes'])) {
-                    try {
-                        $storageTable = $this->storageApiClient->getTable($item['source']);
-                    } catch (Throwable $e) {
-                        continue;
-                    }
-                    $transformationColumnsDatatype = array_map(fn($v) => $v['column'], $item['datatypes']);
+                if (!empty($item['columns'])) {
+                    continue;
+                }
+                if (empty($item['datatypes'])) {
+                    continue;
+                }
 
-                    $missingColumns = array_diff($storageTable['columns'], $transformationColumnsDatatype);
-                    foreach ($missingColumns as $missingColumn) {
-                        if (!isset($storageTable['columnMetadata'][$missingColumn])) {
-                            $newColumn = [
-                                'type' => 'VARCHAR',
-                                'column' => $missingColumn,
-                                'length' => in_array($missingColumn, $storageTable['primaryKey']) ? 255 : null,
-                                'convertEmptyValuesToNull' => false,
-                            ];
+                try {
+                    $storageTable = $this->storageApiClient->getTable($item['source']);
+                } catch (Throwable $e) {
+                    continue;
+                }
+                $transformationColumnsDatatype = array_map(fn($v) => $v['column'], $item['datatypes']);
 
-                            if ($row['configuration']['backend'] === 'redshift' &&
-                                $row['configuration']['type'] === 'simple'
-                            ) {
-                                $newColumn['compression'] = '';
-                            }
-                        } else {
-                            $storageColumnMetadata = $storageTable['columnMetadata'][$missingColumn];
-                            $storageColumnMetadata = (array) array_combine(
-                                array_map(fn($v) => $v['key'], $storageColumnMetadata),
-                                array_map(fn($v) => $v['value'], $storageColumnMetadata),
-                            );
-                            $newColumn = [
-                                'type' => $storageColumnMetadata['KBC.datatype.basetype'] ?? 'VARCHAR',
-                                'column' => $missingColumn,
-                                'length' => $storageColumnMetadata['KBC.datatype.length'] ?? 255,
-                                'convertEmptyValuesToNull' => $storageColumnMetadata['KBC.datatype.nullable'] ?? true,
-                            ];
+                $missingColumns = array_diff($storageTable['columns'], $transformationColumnsDatatype);
+                foreach ($missingColumns as $missingColumn) {
+                    if (!isset($storageTable['columnMetadata'][$missingColumn])) {
+                        $newColumn = [
+                            'type' => 'VARCHAR',
+                            'column' => $missingColumn,
+                            'length' => in_array($missingColumn, $storageTable['primaryKey']) ? 255 : null,
+                            'convertEmptyValuesToNull' => false,
+                        ];
+
+                        if ($row['configuration']['backend'] === 'redshift' &&
+                            $row['configuration']['type'] === 'simple'
+                        ) {
+                            $newColumn['compression'] = '';
                         }
-                        $transformationConfig
-                        ['rows']
-                        [$rowKey]
-                        ['configuration']
-                        ['input']
-                        [$itemKey]
-                        ['datatypes']
-                        [$missingColumn] = $newColumn;
+                    } else {
+                        $storageColumnMetadata = $storageTable['columnMetadata'][$missingColumn];
+                        $storageColumnMetadata = (array) array_combine(
+                            array_map(fn($v) => $v['key'], $storageColumnMetadata),
+                            array_map(fn($v) => $v['value'], $storageColumnMetadata),
+                        );
+                        $newColumn = [
+                            'type' => $storageColumnMetadata['KBC.datatype.basetype'] ?? 'VARCHAR',
+                            'column' => $missingColumn,
+                            'length' => $storageColumnMetadata['KBC.datatype.length'] ?? 255,
+                            'convertEmptyValuesToNull' => $storageColumnMetadata['KBC.datatype.nullable'] ?? true,
+                        ];
                     }
+                    $transformationConfig
+                    ['rows']
+                    [$rowKey]
+                    ['configuration']
+                    ['input']
+                    [$itemKey]
+                    ['datatypes']
+                    [$missingColumn] = $newColumn;
                 }
             }
         }

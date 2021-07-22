@@ -68,12 +68,27 @@ return function (DatadirTest $test): void {
                     'source' => 'in.c-testMigrate.inputTable1',
                     'destination' => 'in.c-testMigrate.inputTable1',
                     'datatypes' => [
-                        'age' => [
+                        'column_1' => [
                             'column' => 'column_1',
                             'type' => 'VARCHAR',
                             'length' => null,
                             'convertEmptyValuesToNull' => false,
                         ],
+                    ],
+                ],
+                [
+                    'source' => 'in.c-testMigrate.inputTable1',
+                    'destination' => 'test2',
+                    'datatypes' => [
+                        'column_1' => [
+                            'column' => 'column_1',
+                            'type' => 'VARCHAR',
+                            'length' => null,
+                            'convertEmptyValuesToNull' => false,
+                        ],
+                    ],
+                    'columns' => [
+                        'column_1',
                     ],
                 ],
             ],

@@ -47,6 +47,21 @@
                                 "convert_empty_values_to_null": false
                             }
                         ]
+                    },
+                    {
+                        "source": "in.c-testMigrate.inputTable1",
+                        "destination": "test2",
+                        "column_types": [
+                            {
+                                "source": "column_1",
+                                "type": "VARCHAR",
+                                "length": null,
+                                "convert_empty_values_to_null": false
+                            }
+                        ],
+                        "columns": [
+                            "column_1"
+                        ]
                     }
                 ]
             },
