@@ -247,9 +247,15 @@ class Application
                             $newColumn = [
                                 'type' => 'VARCHAR',
                                 'column' => $missingColumn,
-                                'length' => 255,
-                                'convertEmptyValuesToNull' => true,
+                                'length' => in_array($missingColumn, $storageTable['primaryKey']) ? 255 : null,
+                                'convertEmptyValuesToNull' => false,
                             ];
+
+                            if ($row['configuration']['backend'] === 'redshift' &&
+                                $row['configuration']['type'] === 'simple'
+                            ) {
+                                $newColumn['compression'] = '';
+                            }
                         } else {
                             $storageColumnMetadata = $storageTable['columnMetadata'][$missingColumn];
                             $storageColumnMetadata = (array) array_combine(

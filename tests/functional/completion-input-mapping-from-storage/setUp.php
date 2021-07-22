@@ -19,6 +19,7 @@ return function (DatadirTest $test): void {
         'column_1',
         'column_2',
         'column_3',
+        'column_4',
     ]);
 
     try {
@@ -27,7 +28,12 @@ return function (DatadirTest $test): void {
         $test->getStorageClient()->dropBucket('in.c-testMigrate', ['force' => true]);
         $test->getStorageClient()->createBucket('testMigrate', 'in');
     }
-    $test->getStorageClient()->createTable('in.c-testMigrate', 'inputTable1', $file);
+    $test->getStorageClient()->createTable(
+        'in.c-testMigrate',
+        'inputTable1',
+        $file,
+        ['primaryKey' => 'column_3']
+    );
 
     $metadata = new Metadata($test->getStorageClient());
 
