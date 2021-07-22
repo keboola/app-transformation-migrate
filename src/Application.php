@@ -4,26 +4,34 @@ declare(strict_types=1);
 
 namespace Keboola\TransformationMigrate;
 
+use Keboola\StorageApi\Client;
 use Keboola\StorageApi\Components;
 use Keboola\StorageApi\Options\Components\Configuration;
 use Keboola\TransformationMigrate\Configuration\Config;
 use Keboola\TransformationMigrate\ValueObjects\TransformationV2;
 use Keboola\TransformationMigrate\ValueObjects\TransformationV2Block;
 use Keboola\TransformationMigrate\ValueObjects\TransformationV2Code;
+use Throwable;
 
 class Application
 {
+    private Client $storageApiClient;
+
     private Components $componentsClient;
 
-    public function __construct(Components $componentsClient)
+    public function __construct(Client $storageApiClient)
     {
-        $this->componentsClient = $componentsClient;
+        $this->storageApiClient = $storageApiClient;
+        $this->componentsClient = new Components($storageApiClient);
     }
 
     public function getTransformationConfig(int $transformationId): array
     {
         $transformationConfig = $this->componentsClient->getConfiguration('transformation', $transformationId);
-        return $this->removeDisableTransformation($transformationConfig);
+        $transformationConfig = $this->removeDisableTransformation($transformationConfig);
+        $transformationConfig = $this->checkAndCompletionInputMapping($transformationConfig);
+
+        return $transformationConfig;
     }
 
     public function migrateTransformationConfig(array $transformationConfig): array
@@ -216,5 +224,63 @@ class Application
         }
 
         return $transformationConfigRows;
+    }
+
+    private function checkAndCompletionInputMapping(array $transformationConfig): array
+    {
+        foreach ($transformationConfig['rows'] as $rowKey => $row) {
+            if (!isset($row['configuration']['input'])) {
+                continue;
+            }
+            foreach ($row['configuration']['input'] as $itemKey => $item) {
+                if (!empty($item['datatypes'])) {
+                    try {
+                        $storageTable = $this->storageApiClient->getTable($item['source']);
+                    } catch (Throwable $e) {
+                        continue;
+                    }
+                    $transformationColumnsDatatype = array_map(fn($v) => $v['column'], $item['datatypes']);
+
+                    $missingColumns = array_diff($storageTable['columns'], $transformationColumnsDatatype);
+                    foreach ($missingColumns as $missingColumn) {
+                        if (!isset($storageTable['columnMetadata'][$missingColumn])) {
+                            $newColumn = [
+                                'type' => 'VARCHAR',
+                                'column' => $missingColumn,
+                                'length' => in_array($missingColumn, $storageTable['primaryKey']) ? 255 : null,
+                                'convertEmptyValuesToNull' => false,
+                            ];
+
+                            if ($row['configuration']['backend'] === 'redshift' &&
+                                $row['configuration']['type'] === 'simple'
+                            ) {
+                                $newColumn['compression'] = '';
+                            }
+                        } else {
+                            $storageColumnMetadata = $storageTable['columnMetadata'][$missingColumn];
+                            $storageColumnMetadata = (array) array_combine(
+                                array_map(fn($v) => $v['key'], $storageColumnMetadata),
+                                array_map(fn($v) => $v['value'], $storageColumnMetadata),
+                            );
+                            $newColumn = [
+                                'type' => $storageColumnMetadata['KBC.datatype.basetype'] ?? 'VARCHAR',
+                                'column' => $missingColumn,
+                                'length' => $storageColumnMetadata['KBC.datatype.length'] ?? 255,
+                                'convertEmptyValuesToNull' => $storageColumnMetadata['KBC.datatype.nullable'] ?? true,
+                            ];
+                        }
+                        $transformationConfig
+                        ['rows']
+                        [$rowKey]
+                        ['configuration']
+                        ['input']
+                        [$itemKey]
+                        ['datatypes']
+                        [$missingColumn] = $newColumn;
+                    }
+                }
+            }
+        }
+        return $transformationConfig;
     }
 }

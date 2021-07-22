@@ -1,0 +1,58 @@
+[
+    {
+        "parameters": {
+            "blocks": [
+                {
+                    "name": "Phase 1",
+                    "codes": [
+                        {
+                            "name": "snflk row",
+                            "script": [
+                                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "storage": {
+            "input": {
+                "tables": [
+                    {
+                        "source": "in.c-testMigrate.inputTable1",
+                        "destination": "in.c-testMigrate.inputTable1",
+                        "column_types": [
+                            {
+                                "source": "column_1",
+                                "type": "VARCHAR",
+                                "length": null,
+                                "convert_empty_values_to_null": false
+                            },
+                            {
+                                "type": "INTEGER",
+                                "source": "column_2",
+                                "length": "2",
+                                "convert_empty_values_to_null": true
+                            },
+                            {
+                                "type": "VARCHAR",
+                                "source": "column_3",
+                                "length": 255,
+                                "convert_empty_values_to_null": false
+                            },
+                            {
+                                "type": "VARCHAR",
+                                "source": "column_4",
+                                "length": null,
+                                "convert_empty_values_to_null": false
+                            }
+                        ]
+                    }
+                ]
+            },
+            "output": {
+                "tables": []
+            }
+        }
+    }
+]
