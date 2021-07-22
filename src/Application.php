@@ -268,10 +268,12 @@ class Application
                             array_map(fn($v) => $v['key'], $storageColumnMetadata),
                             array_map(fn($v) => $v['value'], $storageColumnMetadata),
                         );
+                        $type = $storageColumnMetadata['KBC.datatype.basetype'] ?? 'VARCHAR';
+                        $defaultLength = $type === 'VARCHAR' ? 255 : null;
                         $newColumn = [
-                            'type' => $storageColumnMetadata['KBC.datatype.basetype'] ?? 'VARCHAR',
+                            'type' => $type,
                             'column' => $missingColumn,
-                            'length' => $storageColumnMetadata['KBC.datatype.length'] ?? null,
+                            'length' => $storageColumnMetadata['KBC.datatype.length'] ?? $defaultLength,
                             'convertEmptyValuesToNull' => $storageColumnMetadata['KBC.datatype.nullable'] ?? true,
                         ];
                     }
