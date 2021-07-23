@@ -30,7 +30,7 @@ class Application
         $transformationConfig = $this->componentsClient->getConfiguration('transformation', $transformationId);
         $transformationConfig = $this->removeDisableTransformation($transformationConfig);
         $transformationConfig = $this->checkAndCompletionInputMapping($transformationConfig);
-        $transformationConfig = $this->sortByDependencies($transformationConfig);
+        $transformationConfig = $this->sortTransformationRows($transformationConfig);
         return $transformationConfig;
     }
 
@@ -278,7 +278,7 @@ class Application
         return $transformationConfig;
     }
 
-    private function sortByDependencies(array $transformationConfig): array
+    private function sortTransformationRows(array $transformationConfig): array
     {
         $rows = [];
         foreach ($transformationConfig['rows'] as $row) {
