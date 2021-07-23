@@ -13,6 +13,8 @@ class TransformationV2
 
     private string $name;
 
+    private int $phase;
+
     private array $descriptions = [];
 
     private string $type;
@@ -27,11 +29,12 @@ class TransformationV2
 
     private array $fileTags = [];
 
-    public function __construct(string $name, string $type, string $backend)
+    public function __construct(string $name, string $type, string $backend, int $phase)
     {
         $this->name = $name;
         $this->type = $type;
         $this->backend = $backend;
+        $this->phase = $phase;
     }
 
     public function addBlock(TransformationV2Block $block): void
@@ -134,6 +137,11 @@ class TransformationV2
             $this->getBackend(),
             $this->getType()
         ));
+    }
+
+    public function getPhase(): int
+    {
+        return $this->phase;
     }
 
     public function getBlockByPhase(int $phase): ?TransformationV2Block

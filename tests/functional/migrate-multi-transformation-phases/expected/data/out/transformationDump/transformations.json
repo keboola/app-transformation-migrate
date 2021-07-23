@@ -1,38 +1,52 @@
 [
-  {
-    "parameters": {
-      "blocks": [
-        {
-          "name": "Phase 1",
-          "codes": [
-            {
-              "name": "snflk row 2",
-              "script": [
-                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
-              ]
-            }
-          ]
+    {
+        "parameters": {
+            "blocks": [
+                {
+                    "name": "Phase 1",
+                    "codes": [
+                        {
+                            "name": "snflk row 2",
+                            "script": [
+                                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
-        {
-          "name": "Phase 2",
-          "codes": [
-            {
-              "name": "snflk row",
-              "script": [
-                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
-              ]
+        "storage": {
+            "input": {
+                "tables": []
+            },
+            "output": {
+                "tables": []
             }
-          ]
         }
-      ]
     },
-    "storage": {
-      "input": {
-        "tables": []
-      },
-      "output": {
-        "tables": []
-      }
+    {
+        "parameters": {
+            "blocks": [
+                {
+                    "name": "Phase 2",
+                    "codes": [
+                        {
+                            "name": "snflk row",
+                            "script": [
+                                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "storage": {
+            "input": {
+                "tables": []
+            },
+            "output": {
+                "tables": []
+            }
+        }
     }
-  }
 ]
