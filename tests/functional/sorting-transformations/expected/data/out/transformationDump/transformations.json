@@ -1,0 +1,74 @@
+[
+    {
+        "parameters": {
+            "blocks": [
+                {
+                    "name": "Phase 1",
+                    "codes": [
+                        {
+                            "name": "transformation 4",
+                            "script": [
+                                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
+                            ]
+                        },
+                        {
+                            "name": "transformation 2",
+                            "script": [
+                                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
+                            ]
+                        },
+                        {
+                            "name": "transformation 1",
+                            "script": [
+                                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
+                            ]
+                        },
+                        {
+                            "name": "transformation 3",
+                            "script": [
+                                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Phase 2",
+                    "codes": [
+                        {
+                            "name": "transformation 7",
+                            "script": [
+                                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
+                            ]
+                        },
+                        {
+                            "name": "transformation 5",
+                            "script": [
+                                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
+                            ]
+                        },
+                        {
+                            "name": "transformation 6",
+                            "script": [
+                                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
+                            ]
+                        },
+                        {
+                            "name": "transformation 8",
+                            "script": [
+                                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "storage": {
+            "input": {
+                "tables": []
+            },
+            "output": {
+                "tables": []
+            }
+        }
+    }
+]
