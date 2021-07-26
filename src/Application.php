@@ -11,6 +11,7 @@ use Keboola\TransformationMigrate\Configuration\Config;
 use Keboola\TransformationMigrate\ValueObjects\TransformationV2;
 use Keboola\TransformationMigrate\ValueObjects\TransformationV2Block;
 use Keboola\TransformationMigrate\ValueObjects\TransformationV2Code;
+use MJS\TopSort\Implementations\StringSort;
 use Throwable;
 
 class Application
@@ -288,47 +289,15 @@ class Application
 
         $result = [];
         foreach ($rows as $phaseRows) {
-            $phaseResult = [];
-            $writeOutputRow = function (?array $writeBeforeValues = null, array $row) use (&$phaseResult): void {
-                if (!$writeBeforeValues) {
-                    $phaseResult[] = $row;
-                    return;
-                }
-                $beforeKey = null;
-                foreach ($writeBeforeValues as $writeBeforeValue) {
-                    $actualKey = array_search($writeBeforeValue, array_map(fn($v) => $v['id'], $phaseResult));
-                    if ($actualKey === false) {
-                        continue;
-                    }
-                    $beforeKey = is_null($beforeKey) ? $actualKey : min($beforeKey, $actualKey);
-                }
-
-                if (is_null($beforeKey)) {
-                    $phaseResult[] = $row;
-                    return;
-                }
-
-                for ($i = count($phaseResult); $i > $beforeKey; $i--) {
-                    $phaseResult[$i] = $phaseResult[$i-1];
-                    unset($phaseResult[$i-1]);
-                }
-
-                $phaseResult[$beforeKey] = $row;
-                ksort($phaseResult);
-            };
-
-            $dependentSettings = false;
-            foreach ($phaseRows as $phaseRow) {
-                if (!$dependentSettings) {
-                    $dependentSettings = !empty($phaseRow['configuration']['requires']);
-                }
-                $writeOutputRow($phaseRow['configuration']['requires'] ?? null, $phaseRow);
+            $sorter = new StringSort();
+            foreach ($phaseRows as $rowId => $row) {
+                $sorter->add((string) $rowId, $row['configuration']['requires'] ?? []);
             }
+            $phaseResult = $sorter->sort();
 
-            $result = array_merge(
-                $result,
-                $dependentSettings ? array_reverse($phaseResult) : $phaseResult
-            );
+            foreach ($phaseResult as $item) {
+                $result[] = $phaseRows[$item];
+            }
         }
 
         $transformationConfig['rows'] = $result;

@@ -5,7 +5,8 @@
     "require": {
         "php": "^7.4",
         "keboola/php-component": "^8.1",
-        "keboola/storage-api-client": "^11.7"
+        "keboola/storage-api-client": "^11.7",
+        "marcj/topsort": "^2.0"
     },
     "require-dev": {
         "php-parallel-lint/php-parallel-lint": "^1.2",
