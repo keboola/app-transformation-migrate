@@ -11,6 +11,7 @@ use Keboola\TransformationMigrate\Configuration\Config;
 use Keboola\TransformationMigrate\ValueObjects\TransformationV2;
 use Keboola\TransformationMigrate\ValueObjects\TransformationV2Block;
 use Keboola\TransformationMigrate\ValueObjects\TransformationV2Code;
+use MJS\TopSort\Implementations\StringSort;
 use Throwable;
 
 class Application
@@ -30,13 +31,13 @@ class Application
         $transformationConfig = $this->componentsClient->getConfiguration('transformation', $transformationId);
         $transformationConfig = $this->removeDisableTransformation($transformationConfig);
         $transformationConfig = $this->checkAndCompletionInputMapping($transformationConfig);
-
+        $transformationConfig = $this->sortTransformationRows($transformationConfig);
         return $transformationConfig;
     }
 
     public function migrateTransformationConfig(array $transformationConfig): array
     {
-        $transformationConfigRows = $this->sortConfigRowsByPhase($transformationConfig['rows']);
+        $transformationConfigRows = $transformationConfig['rows'];
 
         $transformationsV2 = [];
         foreach ($transformationConfigRows as $row) {
@@ -213,19 +214,6 @@ class Application
         ];
     }
 
-    private function sortConfigRowsByPhase(array $transformationConfigRows): array
-    {
-        $phases = array_map(fn(array $v) => $v['configuration']['phase'], $transformationConfigRows);
-
-        if (count(array_unique($phases)) > 1) {
-            usort($transformationConfigRows, function (array $a, array $b): int {
-                return $a['configuration']['phase'] < $b['configuration']['phase'] ? -1 : 1;
-            });
-        }
-
-        return $transformationConfigRows;
-    }
-
     private function checkAndCompletionInputMapping(array $transformationConfig): array
     {
         foreach ($transformationConfig['rows'] as $rowKey => $row) {
@@ -288,6 +276,31 @@ class Application
                 }
             }
         }
+        return $transformationConfig;
+    }
+
+    private function sortTransformationRows(array $transformationConfig): array
+    {
+        $rows = [];
+        foreach ($transformationConfig['rows'] as $row) {
+            $rows[$row['configuration']['phase']][$row['id']] = $row;
+        }
+        ksort($rows);
+
+        $result = [];
+        foreach ($rows as $phaseRows) {
+            $sorter = new StringSort();
+            foreach ($phaseRows as $rowId => $row) {
+                $sorter->add((string) $rowId, $row['configuration']['requires'] ?? []);
+            }
+            $phaseResult = $sorter->sort();
+
+            foreach ($phaseResult as $item) {
+                $result[] = $phaseRows[$item];
+            }
+        }
+
+        $transformationConfig['rows'] = $result;
         return $transformationConfig;
     }
 }
