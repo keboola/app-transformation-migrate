@@ -265,18 +265,21 @@ class Application
                             $newColumn['compression'] = '';
                         }
                     } else {
-                        $storageColumnMetadata = $storageTable['columnMetadata'][$missingColumn];
-                        $storageColumnMetadata = (array) array_combine(
-                            array_map(fn($v) => $v['key'], $storageColumnMetadata),
-                            array_map(fn($v) => $v['value'], $storageColumnMetadata),
-                        );
-                        $type = $storageColumnMetadata['KBC.datatype.basetype'] ?? 'VARCHAR';
+                        $columnsMetadata = [];
+                        foreach ($storageTable['columnMetadata'][$missingColumn] as $storageColumnMetadata) {
+                            $columnsMetadata
+                            [$storageColumnMetadata['provider']]
+                            [$storageColumnMetadata['key']] = $storageColumnMetadata['value'];
+                        }
+
+                        $metadata = (array) $columnsMetadata['user'] ?? current($columnsMetadata);
+                        $type = $metadata['KBC.datatype.basetype'] ?? 'VARCHAR';
                         $defaultLength = $type === 'VARCHAR' ? 255 : null;
                         $newColumn = [
                             'type' => $type,
                             'column' => $missingColumn,
-                            'length' => $storageColumnMetadata['KBC.datatype.length'] ?? $defaultLength,
-                            'convertEmptyValuesToNull' => $storageColumnMetadata['KBC.datatype.nullable'] ?? true,
+                            'length' => $metadata['KBC.datatype.length'] ?? $defaultLength,
+                            'convertEmptyValuesToNull' => $metadata['KBC.datatype.nullable'] ?? true,
                         ];
                     }
                     $transformationConfig
