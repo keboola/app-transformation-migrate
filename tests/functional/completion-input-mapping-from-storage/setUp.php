@@ -45,14 +45,30 @@ return function (DatadirTest $test): void {
                 'id' => '1236463282',
                 'key' => 'KBC.datatype.basetype',
                 'value' => 'INTEGER',
-                'provider' => 'user',
                 'timestamp' => '2021-07-22T00:30:35+0200',
             ],
             [
                 'id' => '1236463283',
                 'key' => 'KBC.datatype.length',
                 'value' => '2',
-                'provider' => 'user',
+                'timestamp' => '2021-07-22T00:30:35+0200',
+            ],
+        ]
+    );
+    $metadata->postColumnMetadata(
+        'in.c-testMigrate.inputTable1.column_2',
+        'keboola.snowflake-transformation',
+        [
+            [
+                'id' => '1236463282',
+                'key' => 'KBC.datatype.basetype',
+                'value' => 'NUMERIC',
+                'timestamp' => '2021-07-22T00:30:35+0200',
+            ],
+            [
+                'id' => '1236463283',
+                'key' => 'KBC.datatype.length',
+                'value' => '5,0',
                 'timestamp' => '2021-07-22T00:30:35+0200',
             ],
         ]
