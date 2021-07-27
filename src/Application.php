@@ -42,16 +42,18 @@ class Application
         $transformationsV2 = [];
         foreach ($transformationConfigRows as $row) {
             $transformationKey = sprintf(
-                '%s-%s',
+                '%s-%s-%s',
                 $row['configuration']['backend'],
-                $row['configuration']['type']
+                $row['configuration']['type'],
+                $row['configuration']['phase']
             );
 
             if (!isset($transformationsV2[$transformationKey])) {
                 $transformationsV2[$transformationKey] = new TransformationV2(
                     $transformationConfig['name'],
                     $row['configuration']['type'],
-                    $row['configuration']['backend']
+                    $row['configuration']['backend'],
+                    (int) $row['configuration']['phase']
                 );
                 if (!empty($transformationConfig['description'])) {
                     $transformationsV2[$transformationKey]->addDescription($transformationConfig['description']);
@@ -62,10 +64,20 @@ class Application
         }
 
         $result = [];
-        foreach ($transformationsV2 as $transformationTypeKey => $transformationV2) {
+        $hasMultiplePhases = count(array_unique(array_map(fn($v) => $v->getPhase(), $transformationsV2))) > 1;
+
+        foreach ($transformationsV2 as $transformationV2) {
+            $name = $transformationV2->getName();
+            if ($hasMultiplePhases) {
+                $name .= sprintf(' - %s. phase', $transformationV2->getPhase());
+            }
             $newConfig = $this->createTransformationConfig(
-                $transformationTypeKey,
-                $transformationV2->getName(),
+                sprintf(
+                    '%s-%s',
+                    $transformationV2->getBackend(),
+                    $transformationV2->getType()
+                ),
+                $name,
                 $transformationV2->getDescription(),
                 $this->prepareTransformationConfigV2($transformationV2)
             );
