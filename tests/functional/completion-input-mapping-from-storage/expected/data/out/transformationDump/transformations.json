@@ -29,6 +29,12 @@
                                 "convert_empty_values_to_null": false
                             },
                             {
+                                "type": "VARCHAR",
+                                "source": "column_4",
+                                "length": null,
+                                "convert_empty_values_to_null": false
+                            },
+                            {
                                 "type": "INTEGER",
                                 "source": "column_2",
                                 "length": "2",
@@ -38,12 +44,6 @@
                                 "type": "VARCHAR",
                                 "source": "column_3",
                                 "length": 255,
-                                "convert_empty_values_to_null": false
-                            },
-                            {
-                                "type": "VARCHAR",
-                                "source": "column_4",
-                                "length": null,
                                 "convert_empty_values_to_null": false
                             }
                         ]

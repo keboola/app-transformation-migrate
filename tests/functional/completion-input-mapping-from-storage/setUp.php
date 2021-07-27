@@ -74,6 +74,7 @@ return function (DatadirTest $test): void {
                             'length' => null,
                             'convertEmptyValuesToNull' => false,
                         ],
+                        'column_4' => null,
                     ],
                 ],
                 [
