@@ -245,7 +245,9 @@ class Application
                 } catch (Throwable $e) {
                     continue;
                 }
-                $transformationColumnsDatatype = array_map(fn($v) => $v['column'], $item['datatypes']);
+                $datatypes = array_filter($item['datatypes'], fn($v) => !is_null($v));
+
+                $transformationColumnsDatatype = array_map(fn($v) => $v['column'], $datatypes);
 
                 $missingColumns = array_diff($storageTable['columns'], $transformationColumnsDatatype);
                 foreach ($missingColumns as $missingColumn) {

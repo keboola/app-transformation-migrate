@@ -196,7 +196,11 @@ class TransformationV2
                 case 'datatypes':
                     $columnTypes = [];
                     foreach ($v as $item) {
-                        $columnTypes[] = $this->renameInputMappingKeys($item, $k);
+                        if (is_array($item)) {
+                            $columnTypes[] = $this->renameInputMappingKeys($item, $k);
+                        } else {
+                            $columnTypes[] = $item;
+                        }
                     }
                     $result['column_types'] = $columnTypes;
                     break;
