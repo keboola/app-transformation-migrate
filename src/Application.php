@@ -305,7 +305,9 @@ class Application
         foreach ($rows as $phaseRows) {
             $sorter = new StringSort();
             foreach ($phaseRows as $rowId => $row) {
-                $sorter->add((string) $rowId, $row['configuration']['requires'] ?? []);
+                $requires = $row['configuration']['requires'] ?? [];
+                $filteredRequires = array_filter($requires, fn($v) => isset($phaseRows[$v]));
+                $sorter->add((string) $rowId, $filteredRequires);
             }
             $phaseResult = $sorter->sort();
 
