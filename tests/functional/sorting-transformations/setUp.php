@@ -20,7 +20,13 @@ return function (DatadirTest $test): void {
     $transformations[1]->setConfiguration(
         array_merge(
             $transformations[1]->getConfiguration(),
-            ['requires' => [(string) $transformations[4]->getRowId(), (string) $transformations[2]->getRowId()]]
+            [
+                'requires' => [
+                    (string) $transformations[4]->getRowId(),
+                    (string) $transformations[2]->getRowId(),
+                    '123456789',
+                ],
+            ]
         )
     );
 
