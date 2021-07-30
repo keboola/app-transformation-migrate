@@ -297,7 +297,8 @@ class Application
     {
         $rows = [];
         foreach ($transformationConfig['rows'] as $row) {
-            $rows[$row['configuration']['phase']][$row['id']] = $row;
+            $phase = $row['configuration']['phase'] ?? '1';
+            $rows[$phase][$row['id']] = $row;
         }
         ksort($rows);
 
