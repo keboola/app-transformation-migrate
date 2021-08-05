@@ -52,7 +52,8 @@
           {
             "source": "inputTable2",
             "destination": "inputTable2",
-            "columns": []
+            "columns": [],
+            "column_types": []
           }
         ]
       },
