@@ -1,0 +1,60 @@
+    [
+    {
+        "parameters": {
+            "blocks": [
+                {
+                    "name": "Phase 1",
+                    "codes": [
+                        {
+                            "name": "snflk row 1",
+                            "script": [
+                                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
+                            ]
+                        },
+                        {
+                            "name": "snflk row 2",
+                            "script": [
+                                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "storage": {
+            "input": {
+                "tables": [
+                    {
+                        "source": "inputTable1",
+                        "destination": "inputTable1",
+                        "columns": [],
+                        "changed_since": "-10 minutes",
+                        "column_types": [
+                            {
+                                "source": "column_1",
+                                "type": "VARCHAR",
+                                "length": null,
+                                "convert_empty_values_to_null": false
+                            },
+                            {
+                                "source": "column_2",
+                                "type": "VARCHAR",
+                                "length": null,
+                                "convert_empty_values_to_null": false
+                            },
+                            {
+                                "source": "column_3",
+                                "type": "VARCHAR",
+                                "length": null,
+                                "convert_empty_values_to_null": false
+                            }
+                        ]
+                    }
+                ]
+            },
+            "output": {
+                "tables": []
+            }
+        }
+    }
+]
