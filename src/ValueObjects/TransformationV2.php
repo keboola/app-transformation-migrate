@@ -45,9 +45,13 @@ class TransformationV2
     public function addInputMappingTable(array $inputMappingTable): void
     {
         $newInputMappingTable = $this->replaceInputMappingValues($inputMappingTable);
-
-        $this->inputMappingTables[$inputMappingTable['destination']] =
-            $this->renameInputMappingKeys($newInputMappingTable);
+        $renamedInputMapping = $this->renameInputMappingKeys($newInputMappingTable);
+        if (isset($this->inputMappingTables[$inputMappingTable['destination']])) {
+            $savedColumns = $this->inputMappingTables[$inputMappingTable['destination']]['column_types'] ?? [];
+            $inputMappingColumns = $renamedInputMapping['column_types'] ?? [];
+            $renamedInputMapping['column_types'] = $this->mergeInputMappingColumns($savedColumns, $inputMappingColumns);
+        }
+        $this->inputMappingTables[$inputMappingTable['destination']] = $renamedInputMapping;
     }
 
     public function addOutputMappingTable(array $outputMappingTable): void
@@ -239,5 +243,21 @@ class TransformationV2
             }
         }
         return $result;
+    }
+
+    private function mergeInputMappingColumns(array $savedColumns, array $inputMappingColumns): array
+    {
+        if ($savedColumns === [] || $inputMappingColumns === []) {
+            return [];
+        }
+
+        $listOfSavedColumns = array_map(fn($v) => $v['source'], $savedColumns);
+        foreach ($inputMappingColumns as $inputMappingColumn) {
+            if (!in_array($inputMappingColumn['source'], $listOfSavedColumns)) {
+                $savedColumns[] = $inputMappingColumn;
+            }
+        }
+
+        return $savedColumns;
     }
 }
