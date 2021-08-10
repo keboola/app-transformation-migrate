@@ -27,7 +27,10 @@
                     {
                         "source": "inputTable1",
                         "destination": "inputTable1",
-                        "columns": [],
+                        "columns": [
+                            "column_1",
+                            "column_2"
+                        ],
                         "changed_since": "-10 minutes",
                         "column_types": [
                             {

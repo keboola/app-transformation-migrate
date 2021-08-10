@@ -18,7 +18,9 @@ return function (DatadirTest $test): void {
                 [
                     'source' => 'inputTable1',
                     'destination' => 'inputTable1',
-                    'columns' => [],
+                    'columns' => [
+                        'column_2',
+                    ],
                     'changedSince' => '-10 minutes',
                     'datatypes' => [
                         'column_2' => [
@@ -42,7 +44,11 @@ return function (DatadirTest $test): void {
                 [
                     'source' => 'inputTable1',
                     'destination' => 'inputTable1',
-                    'columns' => [],
+                    'columns' => [
+                        'column_1',
+                        'column_2',
+                        'column_3',
+                    ],
                     'changedSince' => '-10 minutes',
                     'datatypes' => [
                         'column_1' => [

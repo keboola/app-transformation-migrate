@@ -47,9 +47,15 @@ class TransformationV2
         $newInputMappingTable = $this->replaceInputMappingValues($inputMappingTable);
         $renamedInputMapping = $this->renameInputMappingKeys($newInputMappingTable);
         if (isset($this->inputMappingTables[$inputMappingTable['destination']])) {
-            $savedColumns = $this->inputMappingTables[$inputMappingTable['destination']]['column_types'] ?? [];
-            $inputMappingColumns = $renamedInputMapping['column_types'] ?? [];
-            $renamedInputMapping['column_types'] = $this->mergeInputMappingColumns($savedColumns, $inputMappingColumns);
+            $savedInputMapping = $this->inputMappingTables[$inputMappingTable['destination']];
+            $renamedInputMapping['column_types'] = $this->mergeInputMappingColumnTypes(
+                $savedInputMapping['column_types'] ?? [],
+                $renamedInputMapping['column_types'] ?? []
+            );
+            $renamedInputMapping['columns'] = $this->mergeInputMappingColumns(
+                $savedInputMapping['columns'] ?? [],
+                $renamedInputMapping['columns'] ?? []
+            );
         }
         $this->inputMappingTables[$inputMappingTable['destination']] = $renamedInputMapping;
     }
@@ -245,7 +251,7 @@ class TransformationV2
         return $result;
     }
 
-    private function mergeInputMappingColumns(array $savedColumns, array $inputMappingColumns): array
+    private function mergeInputMappingColumnTypes(array $savedColumns, array $inputMappingColumns): array
     {
         if ($savedColumns === [] || $inputMappingColumns === []) {
             return [];
@@ -259,5 +265,17 @@ class TransformationV2
         }
 
         return $savedColumns;
+    }
+
+    private function mergeInputMappingColumns(array $savedColumns, array $inputMappingColumns): array
+    {
+        if ($savedColumns === [] || $inputMappingColumns === []) {
+            return [];
+        }
+
+        return array_keys(array_merge(
+            array_flip($savedColumns),
+            array_flip($inputMappingColumns)
+        ));
     }
 }
