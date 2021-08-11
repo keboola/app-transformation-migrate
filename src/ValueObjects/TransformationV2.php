@@ -37,6 +37,22 @@ class TransformationV2
         $this->phase = $phase;
     }
 
+    public static function createFromConfig(array $config, array $row): self
+    {
+        $transformationV2 = new self(
+            $config['name'],
+            $row['configuration']['type'],
+            $row['configuration']['backend'],
+            (int) $row['configuration']['phase']
+        );
+
+        if (!empty($config['description'])) {
+            $transformationV2->addDescription($config['description']);
+        }
+
+        return $transformationV2;
+    }
+
     public function addBlock(TransformationV2Block $block): void
     {
         $this->blocks[] = $block;

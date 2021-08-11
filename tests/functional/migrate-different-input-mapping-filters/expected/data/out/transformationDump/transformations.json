@@ -1,0 +1,146 @@
+[
+    {
+        "parameters": {
+            "blocks": [
+                {
+                    "name": "Phase 1",
+                    "codes": [
+                        {
+                            "name": "snflk row",
+                            "script": [
+                                "SELECT 1;"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "storage": {
+            "input": {
+                "tables": [
+                    {
+                        "source": "inputTable1",
+                        "destination": "inputTable1",
+                        "changed_since": "-10 minutes",
+                        "where_column": "column",
+                        "where_values": "values",
+                        "where_operator": "operator"
+                    }
+                ]
+            },
+            "output": {
+                "tables": []
+            }
+        }
+    },
+    {
+        "parameters": {
+            "blocks": [
+                {
+                    "name": "Phase 1",
+                    "codes": [
+                        {
+                            "name": "snflk row",
+                            "script": [
+                                "SELECT 2;"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "storage": {
+            "input": {
+                "tables": [
+                    {
+                        "source": "inputTable1",
+                        "destination": "inputTable1",
+                        "changed_since": "-10 minutes",
+                        "where_column": "column",
+                        "where_values": "values",
+                        "where_operator": "operator2"
+                    }
+                ]
+            },
+            "output": {
+                "tables": []
+            }
+        }
+    },
+    {
+        "parameters": {
+            "blocks": [
+                {
+                    "name": "Phase 1",
+                    "codes": [
+                        {
+                            "name": "snflk row",
+                            "script": [
+                                "SELECT 3;"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "storage": {
+            "input": {
+                "tables": [
+                    {
+                        "source": "inputTable1",
+                        "destination": "inputTable1",
+                        "changed_since": "-10 minutes",
+                        "where_column": "column",
+                        "where_values": "values2",
+                        "where_operator": "operator"
+                    }
+                ]
+            },
+            "output": {
+                "tables": []
+            }
+        }
+    },
+    {
+        "parameters": {
+            "blocks": [
+                {
+                    "name": "Phase 1",
+                    "codes": [
+                        {
+                            "name": "snflk row",
+                            "script": [
+                                "SELECT 4;"
+                            ]
+                        },
+                        {
+                            "name": "snflk row",
+                            "script": [
+                                "SELECT 5;"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "storage": {
+            "input": {
+                "tables": [
+                    {
+                        "source": "inputTable1",
+                        "destination": "inputTable1",
+                        "changed_since": "-2 minutes",
+                        "where_column": "column",
+                        "where_values": "values",
+                        "where_operator": "operator",
+                        "column_types": [],
+                        "columns": []
+                    }
+                ]
+            },
+            "output": {
+                "tables": []
+            }
+        }
+    }
+]
