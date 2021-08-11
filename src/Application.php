@@ -49,41 +49,55 @@ class Application
             );
 
             if (!isset($transformationsV2[$transformationKey])) {
-                $transformationsV2[$transformationKey] = new TransformationV2(
-                    $transformationConfig['name'],
-                    $row['configuration']['type'],
-                    $row['configuration']['backend'],
-                    (int) $row['configuration']['phase']
-                );
-                if (!empty($transformationConfig['description'])) {
-                    $transformationsV2[$transformationKey]->addDescription($transformationConfig['description']);
+                $transformationV2 = TransformationV2::createFromConfig($transformationConfig, $row);
+                $transformationsV2[$transformationKey][] = $transformationV2;
+            } else {
+                $transformationV2 = null;
+                foreach ($transformationsV2[$transformationKey] as $key => $savedTransformationV2) {
+                    if ($this->isSuitableTransformation($row, $savedTransformationV2) === true) {
+                        $transformationV2 = $savedTransformationV2;
+                        $transformationsV2[$transformationKey][$key] = $transformationV2;
+                        break;
+                    }
+                }
+
+                if (is_null($transformationV2)) {
+                    $transformationV2 = TransformationV2::createFromConfig($transformationConfig, $row);
+                    $transformationsV2[$transformationKey][] = $transformationV2;
                 }
             }
 
-            $this->processRow($row, $transformationsV2[$transformationKey]);
+            $this->processRow($row, $transformationV2);
+        }
+        $resultTransformationsV2 = [];
+        foreach ($transformationsV2 as $item) {
+            $resultTransformationsV2 = array_merge(
+                $resultTransformationsV2,
+                array_values($item)
+            );
         }
 
         $result = [];
-        $hasMultiplePhases = count(array_unique(array_map(fn($v) => $v->getPhase(), $transformationsV2))) > 1;
+        $hasMultiplePhases = count(array_unique(array_map(fn($v) => $v->getPhase(), $resultTransformationsV2))) > 1;
 
-        foreach ($transformationsV2 as $transformationV2) {
-            $name = $transformationV2->getName();
+        foreach ($resultTransformationsV2 as $resultTransformationV2) {
+            $name = $resultTransformationV2->getName();
             if ($hasMultiplePhases) {
-                $name .= sprintf(' - %s. phase', $transformationV2->getPhase());
+                $name .= sprintf(' - %s. phase', $resultTransformationV2->getPhase());
             }
             $newConfig = $this->createTransformationConfig(
                 sprintf(
                     '%s-%s',
-                    $transformationV2->getBackend(),
-                    $transformationV2->getType()
+                    $resultTransformationV2->getBackend(),
+                    $resultTransformationV2->getType()
                 ),
                 $name,
-                $transformationV2->getDescription(),
-                $this->prepareTransformationConfigV2($transformationV2)
+                $resultTransformationV2->getDescription(),
+                $this->prepareTransformationConfigV2($resultTransformationV2)
             );
 
             $result[] = [
-                'componentId' => $transformationV2->getComponentId(),
+                'componentId' => $resultTransformationV2->getComponentId(),
                 'id' => $newConfig['id'],
             ];
         }
@@ -319,5 +333,53 @@ class Application
 
         $transformationConfig['rows'] = $result;
         return $transformationConfig;
+    }
+
+    private function isSuitableTransformation(array $row, TransformationV2 $savedTransformation): bool
+    {
+        if (empty($row['configuration']['input'])) {
+            return true;
+        }
+        $rowInputMappings = (array) array_combine(
+            array_map(fn($v) => $v['destination'], $row['configuration']['input']),
+            $row['configuration']['input']
+        );
+
+        foreach ($savedTransformation->getInputMappingTables() as $savedInputMappingTable) {
+            if (isset($rowInputMappings[$savedInputMappingTable['destination']])) {
+                $actualInputMappingTable = array_merge(
+                    [
+                        'changedSince' => null,
+                        'whereColumn' => null,
+                        'whereValues' => null,
+                        'whereOperator' => null,
+                    ],
+                    $rowInputMappings[$savedInputMappingTable['destination']]
+                );
+                $savedInputMappingTable = array_merge(
+                    [
+                        'changed_since' => null,
+                        'where_column' => null,
+                        'where_values' => null,
+                        'where_operator' => null,
+                    ],
+                    $savedInputMappingTable
+                );
+                if ($actualInputMappingTable['changedSince'] !== $savedInputMappingTable['changed_since']) {
+                    return false;
+                }
+                if ($actualInputMappingTable['whereColumn'] !== $savedInputMappingTable['where_column']) {
+                    return false;
+                }
+                if ($actualInputMappingTable['whereValues'] !== $savedInputMappingTable['where_values']) {
+                    return false;
+                }
+                if ($actualInputMappingTable['whereOperator'] !== $savedInputMappingTable['where_operator']) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }
