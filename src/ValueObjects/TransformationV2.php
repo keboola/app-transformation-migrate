@@ -78,7 +78,13 @@ class TransformationV2
 
     public function addOutputMappingTable(array $outputMappingTable): void
     {
-        $this->outputMappingTables[$outputMappingTable['source']] =
+        $outputMappingKey = sprintf(
+            '%s-%s',
+            $outputMappingTable['source'],
+            $outputMappingTable['destination']
+        );
+
+        $this->outputMappingTables[$outputMappingKey] =
             $this->renameOutputMappingKeys($outputMappingTable);
     }
 
