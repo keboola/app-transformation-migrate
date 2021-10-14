@@ -1,0 +1,48 @@
+[
+  {
+    "parameters": {
+      "blocks": [
+        {
+          "name": "Phase 1",
+          "codes": [
+            {
+              "name": "snflk row",
+              "script": [
+                "CREATE TABLE \"out_table\" AS SELECT * FROM \"in_table\";"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "storage": {
+      "input": {
+        "tables": []
+      },
+      "output": {
+        "tables": [
+          {
+            "source": "outputTable1",
+            "destination": "outputTable1",
+            "columns": []
+          },
+          {
+            "source": "outputTable1",
+            "destination": "outputTable2",
+            "columns": []
+          },
+          {
+            "source": "outputTable2",
+            "destination": "outputTable1",
+            "columns": []
+          },
+          {
+            "source": "outputTable2",
+            "destination": "outputTable2",
+            "columns": []
+          }
+        ]
+      }
+    }
+  }
+]
