@@ -82,6 +82,12 @@ class LegacyTransformationHelper
                     ['datatypes']
                     [$missingColumn] = $newColumn;
                 }
+
+                $sortColumns = self::sortColumns(
+                    $storageTable['columns'],
+                    $transformationConfig['rows'][$rowKey]['configuration']['input'][$itemKey]['datatypes']
+                );
+                $transformationConfig['rows'][$rowKey]['configuration']['input'][$itemKey]['datatypes'] = $sortColumns;
             }
         }
         return $transformationConfig;
@@ -161,5 +167,14 @@ class LegacyTransformationHelper
         }
 
         return true;
+    }
+
+    private static function sortColumns(array $storageColumns, array $transformationColumns): array
+    {
+        $res = [];
+        foreach ($storageColumns as $storageColumn) {
+            $res[$storageColumn] = $transformationColumns[$storageColumn];
+        }
+        return $res;
     }
 }
