@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace Keboola\TransformationMigrate\FunctionalTests;
 
-use Keboola\Csv\CsvFile;
 use Keboola\DatadirTests\DatadirTestCase;
 use Keboola\DatadirTests\DatadirTestSpecificationInterface;
 use Keboola\StorageApi\Client;
-use Keboola\StorageApi\ClientException;
 use Keboola\StorageApi\Components;
-use Keboola\StorageApi\Metadata;
 use Keboola\TransformationMigrate\Traits\RemoveTrasformationTrait;
 use RuntimeException;
 
@@ -37,7 +34,7 @@ class DatadirTest extends DatadirTestCase
         $this->testProjectDir = $this->getTestFileDir() . '/' . $this->dataName();
         $this->testTempDir = $this->temp->getTmpFolder();
 
-        $this->componentsClient = ClientFactory::createComponentsClient();
+        $this->componentsClient = $this->getComponentsClient();
         $this->storageApiClient = ClientFactory::createStorageClient();
 
         $this->removeTransformationBuckets(TestManager::TRANSFORMATION_BUCKET_NAME);
@@ -107,9 +104,9 @@ class DatadirTest extends DatadirTestCase
         return $this->transformationBucketId;
     }
 
-    public function getComponentsClient(): Components
+    public function getComponentsClient(bool $awareBranch = false): Components
     {
-        return $this->componentsClient;
+        return ClientFactory::createComponentsClient($awareBranch);
     }
 
     public function getStorageClient(): Client

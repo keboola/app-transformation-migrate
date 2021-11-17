@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Keboola\TransformationMigrate;
 
 use Keboola\Component\BaseComponent;
-use Keboola\StorageApi\Components;
 use Keboola\TransformationMigrate\Configuration\Config;
 use Keboola\TransformationMigrate\Configuration\ConfigDefinition;
 
