@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a7305199659a6e54b7302f96c6dace2e",
+    "content-hash": "a7db4764b767d9d1cbc609ac966204e5",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -434,16 +434,16 @@
         },
         {
             "name": "keboola/storage-api-client",
-            "version": "11.7.0",
+            "version": "12.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/keboola/storage-api-php-client.git",
-                "reference": "6e4fc1023c3c83fc840120895edebd9a4f0a7c92"
+                "reference": "e698597f27f1383a3eca757b40c8c0561ffb2a7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/keboola/storage-api-php-client/zipball/6e4fc1023c3c83fc840120895edebd9a4f0a7c92",
-                "reference": "6e4fc1023c3c83fc840120895edebd9a4f0a7c92",
+                "url": "https://api.github.com/repos/keboola/storage-api-php-client/zipball/e698597f27f1383a3eca757b40c8c0561ffb2a7c",
+                "reference": "e698597f27f1383a3eca757b40c8c0561ffb2a7c",
                 "shasum": ""
             },
             "require": {
@@ -459,11 +459,13 @@
             "require-dev": {
                 "apigen/apigen": "4.0.0-RC4",
                 "brianium/paratest": "2.*",
+                "ext-pdo": "*",
                 "ext-pdo_pgsql": "*",
                 "keboola/php-csv-db-import": "^2.2",
-                "keboola/table-backend-utils": "^0.6",
+                "keboola/retry": "^0.5.0",
+                "keboola/table-backend-utils": "^0.16",
                 "phpcompatibility/php-compatibility": "*",
-                "phpstan/phpstan-shim": "^0.9.2",
+                "phpstan/phpstan": "^1.0",
                 "phpunit/phpunit": "^7.0",
                 "squizlabs/php_codesniffer": "^3"
             },
@@ -484,9 +486,9 @@
             "homepage": "http://keboola.com",
             "support": {
                 "issues": "https://github.com/keboola/storage-api-php-client/issues",
-                "source": "https://github.com/keboola/storage-api-php-client/tree/11.7.0"
+                "source": "https://github.com/keboola/storage-api-php-client/tree/12.7.0"
             },
-            "time": "2021-02-05T20:11:13+00:00"
+            "time": "2021-11-16T10:45:48+00:00"
         },
         {
             "name": "marcj/topsort",
