@@ -13,6 +13,7 @@ use Keboola\TransformationMigrate\Configuration\Config;
 use Keboola\TransformationMigrate\ValueObjects\TransformationV2;
 use Keboola\TransformationMigrate\ValueObjects\TransformationV2Block;
 use Keboola\TransformationMigrate\ValueObjects\TransformationV2Code;
+use Throwable;
 
 class Application
 {
@@ -105,7 +106,10 @@ class Application
                 'id' => $newConfig->getConfigurationId(),
             ];
 
-            $this->writeConfigMetadata($config, $newConfig, $transformationConfig['name']);
+            try {
+                $this->writeConfigMetadata($config, $newConfig, $transformationConfig['name']);
+            } catch (Throwable $e) {
+            }
         }
 
         return $result;
@@ -150,7 +154,7 @@ class Application
         $configMetadata = new ConfigurationMetadata($componentConfiguration);
         $configMetadata->setMetadata([
             [
-                'key' => 'KBC.configurationFolder',
+                'key' => 'KBC.configuration.folderName',
                 'value' => $folder,
             ],
         ]);
