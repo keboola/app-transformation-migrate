@@ -7,4 +7,5 @@ services:
       - ./data:/data
     environment:
       - KBC_TOKEN
+      - KBC_NON_MASTER_TOKEN
       - KBC_URL
