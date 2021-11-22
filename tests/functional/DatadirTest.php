@@ -6,10 +6,13 @@ namespace Keboola\TransformationMigrate\FunctionalTests;
 
 use Keboola\DatadirTests\DatadirTestCase;
 use Keboola\DatadirTests\DatadirTestSpecificationInterface;
+use Keboola\DatadirTests\Exception\DatadirTestsException;
 use Keboola\StorageApi\Client;
 use Keboola\StorageApi\Components;
 use Keboola\TransformationMigrate\Traits\RemoveTrasformationTrait;
 use RuntimeException;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\Process;
 
 class DatadirTest extends DatadirTestCase
 {
@@ -26,6 +29,8 @@ class DatadirTest extends DatadirTestCase
     private int $transformationBucketId;
 
     protected array $output = [];
+
+    protected array $processEnv = [];
 
     protected function setUp(): void
     {
@@ -60,6 +65,11 @@ class DatadirTest extends DatadirTestCase
     {
         $tempDatadir = $this->getTempDatadir($specification);
 
+        $processEnvFIle = $this->testProjectDir . '/processEnv.php';
+        if (file_exists($processEnvFIle)) {
+            $this->processEnv = require $processEnvFIle;
+        }
+
         $process = $this->runScript($tempDatadir->getTmpFolder());
 
         if ($process->getOutput()) {
@@ -86,6 +96,36 @@ class DatadirTest extends DatadirTestCase
         }
 
         $this->assertMatchesSpecification($specification, $process, $tempDatadir->getTmpFolder());
+    }
+
+    protected function runScript(string $datadirPath): Process
+    {
+        $fs = new Filesystem();
+
+        $script = $this->getScript();
+        if (!$fs->exists($script)) {
+            throw new DatadirTestsException(sprintf(
+                'Cannot open script file "%s"',
+                $script
+            ));
+        }
+
+        $runCommand = [
+            'php',
+            $script,
+        ];
+        $runProcess = new Process($runCommand);
+        $runProcess->setEnv(
+            array_merge(
+                $this->processEnv,
+                [
+                    'KBC_DATADIR' => $datadirPath,
+                ]
+            )
+        );
+        $runProcess->setTimeout(0.0);
+        $runProcess->run();
+        return $runProcess;
     }
 
     public function tearDown(): void
