@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Keboola\TransformationMigrate;
 
 use Keboola\Component\BaseComponent;
-use Keboola\StorageApi\Components;
 use Keboola\TransformationMigrate\Configuration\Config;
 use Keboola\TransformationMigrate\Configuration\ConfigDefinition;
 
@@ -22,7 +21,7 @@ class Component extends BaseComponent
         if ($this->getConfig()->hasTransformationId()) {
             $transformationConfig = $application->getTransformationConfig($this->getConfig()->getTransformationId());
             $application->checkConfigIsValid($transformationConfig);
-            $result = $application->migrateTransformationConfig($transformationConfig);
+            $result = $application->migrateTransformationConfig($transformationConfig, $this->getConfig());
             $application->markOldTransformationAsMigrated($transformationConfig);
             return $result;
         }

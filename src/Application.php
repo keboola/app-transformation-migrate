@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace Keboola\TransformationMigrate;
 
+use Keboola\Component\UserException;
 use Keboola\StorageApi\Client;
+use Keboola\StorageApi\ClientException;
 use Keboola\StorageApi\Components;
+use Keboola\StorageApi\DevBranches;
 use Keboola\StorageApi\Options\Components\Configuration;
+use Keboola\StorageApi\Options\Components\ConfigurationMetadata;
 use Keboola\TransformationMigrate\Configuration\Config;
 use Keboola\TransformationMigrate\ValueObjects\TransformationV2;
 use Keboola\TransformationMigrate\ValueObjects\TransformationV2Block;
 use Keboola\TransformationMigrate\ValueObjects\TransformationV2Code;
+use Throwable;
 
 class Application
 {
@@ -37,7 +42,7 @@ class Application
         return $transformationConfig;
     }
 
-    public function migrateTransformationConfig(array $transformationConfig): array
+    public function migrateTransformationConfig(array $transformationConfig, Config $config): array
     {
         $transformationConfigRows = $transformationConfig['rows'];
 
@@ -100,8 +105,19 @@ class Application
 
             $result[] = [
                 'componentId' => $resultTransformationV2->getComponentId(),
-                'id' => $newConfig['id'],
+                'id' => $newConfig->getConfigurationId(),
             ];
+
+            try {
+                $this->writeConfigMetadata($config, $newConfig, $transformationConfig['name']);
+            } catch (ClientException $e) {
+                $components = new Components($this->storageApiClient);
+                $components->deleteConfiguration(
+                    $resultTransformationV2->getComponentId(),
+                    $newConfig->getConfigurationId()
+                );
+                throw new UserException($e->getMessage(), $e->getCode(), $e);
+            }
         }
 
         return $result;
@@ -131,12 +147,35 @@ class Application
         $transformationValidator->validate();
     }
 
+    private function writeConfigMetadata(Config $config, Configuration $componentConfiguration, string $folder): void
+    {
+        $storageApiClient = $this->storageApiClient;
+        if ($storageApiClient instanceof Client) {
+            $devBranches = new DevBranches($this->storageApiClient);
+            $listBranches = $devBranches->listBranches();
+            $defaultBranch = current(array_filter($listBranches, fn($v) => $v['isDefault'] === true));
+            $storageApiClient = StorageApiClientFactory::getClient($config, (string) $defaultBranch['id']);
+        }
+
+        $components = new Components($storageApiClient);
+
+        $configMetadata = new ConfigurationMetadata($componentConfiguration);
+        $configMetadata->setMetadata([
+            [
+                'key' => 'KBC.configuration.folderName',
+                'value' => $folder,
+            ],
+        ]);
+
+        $components->addConfigurationMetadata($configMetadata);
+    }
+
     private function createTransformationConfig(
         string $transformationTypeKey,
         string $name,
         string $description,
         array $config
-    ): array {
+    ): Configuration {
         $options = new Configuration();
         $options
             ->setName($name)
@@ -144,8 +183,10 @@ class Application
             ->setConfiguration($config)
             ->setComponentId(Config::getComponentId($transformationTypeKey))
         ;
+        $newConfig = $this->componentsClient->addConfiguration($options);
 
-        return $this->componentsClient->addConfiguration($options);
+        $options->setConfigurationId($newConfig['id']);
+        return $options;
     }
 
     private function processRow(array $row, TransformationV2 $transformationV2): void

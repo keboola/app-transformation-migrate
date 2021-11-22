@@ -40,7 +40,7 @@ class TransformationV2
     public static function createFromConfig(array $config, array $row): self
     {
         $transformationV2 = new self(
-            $config['name'],
+            $row['name'],
             $row['configuration']['type'],
             $row['configuration']['backend'],
             (int) $row['configuration']['phase']

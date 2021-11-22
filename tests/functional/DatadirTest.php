@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Keboola\TransformationMigrate\FunctionalTests;
 
-use Keboola\Csv\CsvFile;
 use Keboola\DatadirTests\DatadirTestCase;
 use Keboola\DatadirTests\DatadirTestSpecificationInterface;
+use Keboola\DatadirTests\Exception\DatadirTestsException;
 use Keboola\StorageApi\Client;
-use Keboola\StorageApi\ClientException;
 use Keboola\StorageApi\Components;
-use Keboola\StorageApi\Metadata;
 use Keboola\TransformationMigrate\Traits\RemoveTrasformationTrait;
 use RuntimeException;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\Process;
 
 class DatadirTest extends DatadirTestCase
 {
@@ -30,6 +30,8 @@ class DatadirTest extends DatadirTestCase
 
     protected array $output = [];
 
+    protected array $processEnv = [];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -37,7 +39,7 @@ class DatadirTest extends DatadirTestCase
         $this->testProjectDir = $this->getTestFileDir() . '/' . $this->dataName();
         $this->testTempDir = $this->temp->getTmpFolder();
 
-        $this->componentsClient = ClientFactory::createComponentsClient();
+        $this->componentsClient = $this->getComponentsClient();
         $this->storageApiClient = ClientFactory::createStorageClient();
 
         $this->removeTransformationBuckets(TestManager::TRANSFORMATION_BUCKET_NAME);
@@ -62,6 +64,11 @@ class DatadirTest extends DatadirTestCase
     public function testDatadir(DatadirTestSpecificationInterface $specification): void
     {
         $tempDatadir = $this->getTempDatadir($specification);
+
+        $processEnvFIle = $this->testProjectDir . '/processEnv.php';
+        if (file_exists($processEnvFIle)) {
+            $this->processEnv = require $processEnvFIle;
+        }
 
         $process = $this->runScript($tempDatadir->getTmpFolder());
 
@@ -91,6 +98,36 @@ class DatadirTest extends DatadirTestCase
         $this->assertMatchesSpecification($specification, $process, $tempDatadir->getTmpFolder());
     }
 
+    protected function runScript(string $datadirPath): Process
+    {
+        $fs = new Filesystem();
+
+        $script = $this->getScript();
+        if (!$fs->exists($script)) {
+            throw new DatadirTestsException(sprintf(
+                'Cannot open script file "%s"',
+                $script
+            ));
+        }
+
+        $runCommand = [
+            'php',
+            $script,
+        ];
+        $runProcess = new Process($runCommand);
+        $runProcess->setEnv(
+            array_merge(
+                $this->processEnv,
+                [
+                    'KBC_DATADIR' => $datadirPath,
+                ]
+            )
+        );
+        $runProcess->setTimeout(0.0);
+        $runProcess->run();
+        return $runProcess;
+    }
+
     public function tearDown(): void
     {
         $this->removeTransformationBuckets(TestManager::TRANSFORMATION_BUCKET_NAME);
@@ -107,9 +144,9 @@ class DatadirTest extends DatadirTestCase
         return $this->transformationBucketId;
     }
 
-    public function getComponentsClient(): Components
+    public function getComponentsClient(bool $awareBranch = false): Components
     {
-        return $this->componentsClient;
+        return ClientFactory::createComponentsClient($awareBranch);
     }
 
     public function getStorageClient(): Client

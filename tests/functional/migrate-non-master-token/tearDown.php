@@ -23,10 +23,6 @@ return function (DatadirTest $test): string {
             ->setConfigurationId($item['id'])
         ;
 
-        $metadata = $test->getComponentsClient(true)->listConfigurationMetadata($configurationMetadataOptions);
-
-        Assert::assertEquals('KBC.configuration.folderName', $metadata[0]['key']);
-        Assert::assertEquals('test_transformation_bucket', $metadata[0]['value']);
         Assert::assertArrayHasKey('configuration', $oldTransformation);
         Assert::assertArrayHasKey('migrated', $oldTransformation['configuration']);
         Assert::assertTrue($oldTransformation['configuration']['migrated']);
