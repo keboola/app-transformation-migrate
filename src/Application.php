@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Keboola\TransformationMigrate;
 
+use Keboola\Component\UserException;
 use Keboola\StorageApi\Client;
+use Keboola\StorageApi\ClientException;
 use Keboola\StorageApi\Components;
 use Keboola\StorageApi\DevBranches;
 use Keboola\StorageApi\Options\Components\Configuration;
@@ -108,7 +110,13 @@ class Application
 
             try {
                 $this->writeConfigMetadata($config, $newConfig, $transformationConfig['name']);
-            } catch (Throwable $e) {
+            } catch (ClientException $e) {
+                $components = new Components($this->storageApiClient);
+                $components->deleteConfiguration(
+                    $resultTransformationV2->getComponentId(),
+                    $newConfig->getConfigurationId()
+                );
+                throw new UserException($e->getMessage(), $e->getCode(), $e);
             }
         }
 
