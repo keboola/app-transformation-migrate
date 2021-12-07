@@ -13,6 +13,8 @@ return function (DatadirTest $test): string {
     $result = [];
     foreach ($test->getOutput() as $item) {
         $transformation = $manager->getTransformationV2($item);
+        Assert::assertEquals(TestManager::TRANSFORMATION_BUCKET_NAME, $transformation['name']);
+
         $result[] = $transformation['configuration'];
 
         $oldTransformation = $manager->getTransformation($test->getTransformationBucketId());
