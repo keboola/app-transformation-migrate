@@ -55,9 +55,9 @@ class Config extends BaseConfig
         }
     }
 
-    public function getTransformationId(): int
+    public function getTransformationId(): string
     {
-        return (int) $this->getValue(['parameters', 'transformationId']);
+        return (string) $this->getValue(['parameters', 'transformationId']);
     }
 
     public function getKbcStorageToken(): string

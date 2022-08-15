@@ -16,7 +16,7 @@ class ConfigDefinition extends BaseConfigDefinition
         /** @noinspection NullPointerExceptionInspection */
         $parametersNode
             ->children()
-                ->integerNode('transformationId')
+                ->scalarNode('transformationId')
                     ->isRequired()
                 ->end()
             ->end()

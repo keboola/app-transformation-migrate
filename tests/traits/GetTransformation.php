@@ -11,7 +11,7 @@ trait GetTransformation
 {
     protected Components $componentsClient;
 
-    public function getTransformation(int $id): array
+    public function getTransformation(string $id): array
     {
         return $this->componentsClient->getConfiguration('transformation', $id);
     }

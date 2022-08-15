@@ -26,7 +26,7 @@ class DatadirTest extends DatadirTestCase
 
     protected string $testTempDir;
 
-    private int $transformationBucketId;
+    private string $transformationBucketId;
 
     protected array $output = [];
 
@@ -133,13 +133,13 @@ class DatadirTest extends DatadirTestCase
         $this->removeTransformationBuckets(TestManager::TRANSFORMATION_BUCKET_NAME);
     }
 
-    public function setTransformationBucketId(int $transformationBucketId): self
+    public function setTransformationBucketId(string $transformationBucketId): self
     {
         $this->transformationBucketId = $transformationBucketId;
         return $this;
     }
 
-    public function getTransformationBucketId(): int
+    public function getTransformationBucketId(): string
     {
         return $this->transformationBucketId;
     }

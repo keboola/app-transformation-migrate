@@ -14,7 +14,8 @@ trait CreateTransformationBucketTrait
 
     public function createBucket(
         string $name = TestManager::TRANSFORMATION_BUCKET_NAME,
-        ?string $description = null
+        ?string $description = null,
+        ?string $configurationId = null
     ): Configuration {
         $configuration = new Configuration();
         $configuration
@@ -27,8 +28,12 @@ trait CreateTransformationBucketTrait
             $configuration->setDescription($description);
         }
 
+        if ($configurationId) {
+            $configuration->setConfigurationId($configurationId);
+        }
+
         $transformationBucket = $this->componentsClient->addConfiguration($configuration);
-        $configuration->setConfigurationId((int) $transformationBucket['id']);
+        $configuration->setConfigurationId($transformationBucket['id']);
         return $configuration;
     }
 }

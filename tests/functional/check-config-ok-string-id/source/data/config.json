@@ -1,0 +1,6 @@
+{
+  "action": "check",
+  "parameters": {
+    "transformationId": "%env(string:TRANSFORMATION_BUCKET_ID)%"
+  }
+}
