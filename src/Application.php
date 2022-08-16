@@ -29,7 +29,7 @@ class Application
         $this->componentsClient = new Components($storageApiClient);
     }
 
-    public function getTransformationConfig(int $transformationId): array
+    public function getTransformationConfig(string $transformationId): array
     {
         $transformationConfig = $this->componentsClient->getConfiguration('transformation', $transformationId);
         $transformationConfig = LegacyTransformationHelper::removeDisableTransformation($transformationConfig);
