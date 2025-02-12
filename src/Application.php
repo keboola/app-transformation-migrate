@@ -48,12 +48,7 @@ class Application
 
         $transformationsV2 = [];
         foreach ($transformationConfigRows as $row) {
-            $transformationKey = sprintf(
-                '%s-%s-%s',
-                $row['configuration']['backend'],
-                $row['configuration']['type'],
-                $row['configuration']['phase']
-            );
+            $transformationKey = LegacyTransformationHelper::createTransformationKey($transformationConfig, $row);
 
             if (!isset($transformationsV2[$transformationKey])) {
                 $transformationV2 = TransformationV2::createFromConfig($transformationConfig, $row);
