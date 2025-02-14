@@ -30,21 +30,7 @@
                             ]
                         }
                     ]
-                }
-            ]
-        },
-        "storage": {
-            "input": {
-                "tables": []
-            },
-            "output": {
-                "tables": []
-            }
-        }
-    },
-    {
-        "parameters": {
-            "blocks": [
+                },
                 {
                     "name": "Phase 2",
                     "codes": [

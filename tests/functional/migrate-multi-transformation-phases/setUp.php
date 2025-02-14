@@ -15,13 +15,13 @@ return function (DatadirTest $test): void {
         null,
         [
             'phase' => 2,
-            'name' => 'snflk row',
+            'name' => 'snflk row 2',
         ]
     );
 
     $manager->createTransformation(
         $configuration,
-        'snflk row 2'
+        'snflk row 1'
     );
 
     putenv('TRANSFORMATION_BUCKET_ID=' . $configuration->getConfigurationId());
