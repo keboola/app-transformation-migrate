@@ -1,6 +1,0 @@
-{
-  "action": "migrate",
-  "parameters": {
-    "transformationId": "%env(int:TRANSFORMATION_BUCKET_ID)%"
-  }
-}
