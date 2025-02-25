@@ -169,6 +169,25 @@ class LegacyTransformationHelper
         return true;
     }
 
+    public static function createTransformationKey(array $transformationConfig, array $row): string
+    {
+        return self::isSameBackend($transformationConfig)
+            ? $row['configuration']['type']
+            : sprintf(
+                '%s-%s-%s',
+                $row['configuration']['backend'],
+                $row['configuration']['type'],
+                $row['configuration']['phase']
+            );
+    }
+
+    private static function isSameBackend(array $transformationConfig): bool
+    {
+        // if there is just Snowflake backend - merge into one configuration
+        $backendMap = array_map(fn($row) => $row['configuration']['backend'], $transformationConfig['rows']);
+        return count(array_unique($backendMap)) === 1;
+    }
+
     private static function sortColumns(array $storageColumns, array $transformationColumns): array
     {
         $res = [];
