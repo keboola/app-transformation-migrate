@@ -3,10 +3,9 @@
     "description": "Migration tool OLD -> NEW transformation",
     "license": "MIT",
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.4",
         "keboola/php-component": "^9.4",
-        "keboola/storage-api-client": "^12.7",
-        "keboola/orchestrator-php-client": "^1.0",
+        "keboola/storage-api-client": "^v15.5.0",
         "marcj/topsort": "^2.0"
     },
     "require-dev": {

@@ -57,16 +57,8 @@ class Config extends BaseConfig
 
     public function getTransformationId(): string
     {
-        return $this->getStringValue(['parameters', 'transformationId']);
-    }
-
-    public function shouldUpdateOrchestrations(): bool
-    {
-        try {
-            return (bool) $this->getValue(['parameters', 'updateOrchestrations'], false);
-        } catch (InvalidArgumentException $e) {
-            return false;
-        }
+        // @phpstan-ignore-next-line
+        return (string) $this->getValue(['parameters', 'transformationId']);
     }
 
     public function getKbcStorageToken(): string

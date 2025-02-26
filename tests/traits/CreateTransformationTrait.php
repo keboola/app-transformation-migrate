@@ -16,7 +16,7 @@ trait CreateTransformationTrait
         Configuration $configuration,
         ?string $name,
         ?string $description = null,
-        array $config = []
+        array $config = [],
     ): ConfigurationRow {
         $row = new ConfigurationRow($configuration);
         if ($name) {

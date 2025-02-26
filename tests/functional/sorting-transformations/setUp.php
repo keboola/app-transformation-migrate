@@ -17,13 +17,41 @@ return function (DatadirTest $test): void {
         );
     }
 
+    $config1 = $transformations[1]->getConfiguration();
+    assert(is_array($config1));
+    $config2 = $transformations[2]->getConfiguration();
+    assert(is_array($config2));
+    $config3 = $transformations[3]->getConfiguration();
+    assert(is_array($config3));
+    $config5 = $transformations[5]->getConfiguration();
+    assert(is_array($config5));
+    $config6 = $transformations[6]->getConfiguration();
+    assert(is_array($config6));
+    $config7 = $transformations[7]->getConfiguration();
+    assert(is_array($config7));
+    $config8 = $transformations[8]->getConfiguration();
+    assert(is_array($config8));
+
+    $row1Id = $transformations[1]->getRowId();
+    assert(is_int($row1Id));
+    $row2Id = $transformations[2]->getRowId();
+    assert(is_int($row2Id));
+    $row4Id = $transformations[4]->getRowId();
+    assert(is_int($row4Id));
+    $row5Id = $transformations[5]->getRowId();
+    assert(is_int($row5Id));
+    $row6Id = $transformations[6]->getRowId();
+    assert(is_int($row6Id));
+    $row7Id = $transformations[7]->getRowId();
+    assert(is_int($row7Id));
+
     $transformations[1]->setConfiguration(
         array_merge(
-            (array) $transformations[1]->getConfiguration(),
+            $config1,
             [
                 'requires' => [
-                    (string) $transformations[4]->getRowId(),
-                    (string) $transformations[2]->getRowId(),
+                    $row4Id,
+                    $row2Id,
                     '123456789',
                 ],
             ],
@@ -32,41 +60,41 @@ return function (DatadirTest $test): void {
 
     $transformations[2]->setConfiguration(
         array_merge(
-            $transformations[2]->getConfiguration(),
-            ['requires' => [(string) $transformations[4]->getRowId()]],
+            $config2,
+            ['requires' => [$row4Id]],
         ),
     );
 
     $transformations[3]->setConfiguration(
         array_merge(
-            $transformations[3]->getConfiguration(),
-            ['requires' => [(string) $transformations[1]->getRowId(), (string) $transformations[2]->getRowId()]],
+            $config3,
+            ['requires' => [$row1Id, $row2Id]],
         ),
     );
 
     $transformations[5]->setConfiguration(
         array_merge(
-            $transformations[5]->getConfiguration(),
+            $config5,
             [
                 'phase' => 2,
-                'requires' => [(string) $transformations[7]->getRowId()],
+                'requires' => [$row7Id],
             ],
         ),
     );
 
     $transformations[6]->setConfiguration(
         array_merge(
-            $transformations[6]->getConfiguration(),
+            $config6,
             [
                 'phase' => 2,
-                'requires' => [(string) $transformations[5]->getRowId()],
+                'requires' => [$row5Id],
             ],
         ),
     );
 
     $transformations[7]->setConfiguration(
         array_merge(
-            $transformations[7]->getConfiguration(),
+            $config7,
             [
                 'phase' => 2,
             ],
@@ -75,13 +103,13 @@ return function (DatadirTest $test): void {
 
     $transformations[8]->setConfiguration(
         array_merge(
-            $transformations[8]->getConfiguration(),
+            $config8,
             [
                 'phase' => 2,
                 'requires' => [
-                    (string) $transformations[5]->getRowId(),
-                    (string) $transformations[6]->getRowId(),
-                    (string) $transformations[7]->getRowId(),
+                    $row5Id,
+                    $row6Id,
+                    $row7Id,
                 ],
             ],
         ),
@@ -91,6 +119,9 @@ return function (DatadirTest $test): void {
         $test->getComponentsClient()->updateConfigurationRow($transformation);
     }
 
-    $test->setTransformationBucketId($configuration->getConfigurationId());
-    putenv('TRANSFORMATION_BUCKET_ID=' . $configuration->getConfigurationId());
+    $configurationId = $configuration->getConfigurationId();
+    assert(is_string($configurationId));
+
+    $test->setTransformationBucketId($configurationId);
+    putenv('TRANSFORMATION_BUCKET_ID=' . $configurationId);
 };

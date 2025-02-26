@@ -24,6 +24,9 @@ return function (DatadirTest $test): void {
         'description snflk row 2',
     );
 
-    $test->setTransformationBucketId($configuration->getConfigurationId());
-    putenv('TRANSFORMATION_BUCKET_ID=' . $configuration->getConfigurationId());
+    $configurationId = $configuration->getConfigurationId();
+    assert(is_string($configurationId));
+
+    $test->setTransformationBucketId($configurationId);
+    putenv('TRANSFORMATION_BUCKET_ID=' . $configurationId);
 };

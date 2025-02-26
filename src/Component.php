@@ -23,27 +23,6 @@ class Component extends BaseComponent
             $application->checkConfigIsValid($transformationConfig);
             $result = $application->migrateTransformationConfig($transformationConfig, $this->getConfig());
             $application->markOldTransformationAsMigrated($transformationConfig);
-            
-            // If updateOrchestrations flag is set to true, update orchestrations as well
-            if ($this->getConfig()->shouldUpdateOrchestrations()) {
-                $this->getLogger()->info('Updating orchestrations referencing the migrated transformation.');
-                $updatedOrchestrations = $application->updateOrchestrations($this->getLogger());
-                
-                if (count($updatedOrchestrations['updated']) > 0) {
-                    $this->getLogger()->info(
-                        sprintf(
-                            'Updated %d orchestration(s) with the new transformation configuration.',
-                            count($updatedOrchestrations['updated'])
-                        )
-                    );
-                    
-                    // Add information about updated orchestrations to the result
-                    $result['updatedOrchestrations'] = $updatedOrchestrations;
-                } else {
-                    $this->getLogger()->info('No orchestrations found referencing the migrated transformation.');
-                }
-            }
-            
             return $result;
         }
 

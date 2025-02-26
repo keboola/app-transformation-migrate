@@ -22,9 +22,6 @@ class Application
     private Client $storageApiClient;
 
     private Components $componentsClient;
-    
-    /** @var array */
-    private $migrationResults = [];
 
     public function __construct(Client $storageApiClient)
     {
@@ -117,38 +114,8 @@ class Application
                 throw new UserException($e->getMessage(), $e->getCode(), $e);
             }
         }
-        
-        // Store migration results for later use in updateOrchestrations
-        $this->migrationResults[$transformationConfig['id']] = $result;
 
         return $result;
-    }
-    
-    /**
-     * Update orchestrations to reference the new transformation configurations
-     * 
-     * @param \Psr\Log\LoggerInterface|null $logger Logger for orchestration updates
-     * @return array Details of the updated orchestrations
-     */
-    public function updateOrchestrations(?\Psr\Log\LoggerInterface $logger = null): array
-    {
-        // Create a mapping of old config IDs to new config IDs
-        $oldToNewConfigMapping = [];
-        
-        foreach ($this->migrationResults as $oldConfigId => $newConfigs) {
-            $oldToNewConfigMapping[$oldConfigId] = $newConfigs[0]['id']; // Use the first new config ID for each old config
-        }
-        
-        if (empty($oldToNewConfigMapping)) {
-            return [];
-        }
-        
-        if ($logger === null) {
-            $logger = new \Psr\Log\NullLogger();
-        }
-        
-        $orchestrationsUpdater = new OrchestrationsUpdater($this->storageApiClient, $logger, $oldToNewConfigMapping);
-        return $orchestrationsUpdater->updateOrchestrations();
     }
 
     public function markOldTransformationAsMigrated(array $transformationConfig): void
@@ -202,7 +169,7 @@ class Application
         string $transformationTypeKey,
         string $name,
         string $description,
-        array $config
+        array $config,
     ): Configuration {
         $options = new Configuration();
         $options
@@ -300,15 +267,5 @@ class Application
                 ],
             ],
         ];
-    }
-    
-    /**
-     * Get the results of the migration process
-     * 
-     * @return array Array of old config IDs mapped to new config details
-     */
-    public function getMigrationResults(): array
-    {
-        return $this->migrationResults;
     }
 }
