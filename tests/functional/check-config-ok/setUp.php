@@ -11,12 +11,12 @@ return function (DatadirTest $test): void {
 
     $manager->createTransformation(
         $configuration,
-        'snflk row'
+        'snflk row',
     );
 
     $manager->createTransformation(
         $configuration,
-        'snflk row 2'
+        'snflk row 2',
     );
 
     putenv('TRANSFORMATION_BUCKET_ID=' . $configuration->getConfigurationId());

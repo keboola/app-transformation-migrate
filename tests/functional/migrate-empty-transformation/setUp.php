@@ -10,7 +10,7 @@ return function (DatadirTest $test): void {
     $manager = new TestManager($test->getComponentsClient());
     $configuration = $manager->createBucket(
         TestManager::TRANSFORMATION_BUCKET_NAME,
-        "test bucket description\n\nwith new line"
+        "test bucket description\n\nwith new line",
     );
 
     $row = new ConfigurationRow($configuration);
@@ -22,6 +22,9 @@ return function (DatadirTest $test): void {
 
     $test->getComponentsClient()->addConfigurationRow($row);
 
-    $test->setTransformationBucketId($configuration->getConfigurationId());
-    putenv('TRANSFORMATION_BUCKET_ID=' . $configuration->getConfigurationId());
+    $configurationId = $configuration->getConfigurationId();
+    assert(is_string($configurationId));
+
+    $test->setTransformationBucketId($configurationId);
+    putenv('TRANSFORMATION_BUCKET_ID=' . $configurationId);
 };

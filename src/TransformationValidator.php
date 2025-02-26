@@ -31,7 +31,7 @@ class TransformationValidator
         $phases = array_map(fn(array $v) => $v['configuration']['phase'], $this->config['rows']);
         $backends = array_map(
             fn(array $v) => sprintf('%s-%s', $v['configuration']['backend'], $v['configuration']['type']),
-            $this->config['rows']
+            $this->config['rows'],
         );
 
         $uniqueBackends = array_unique($backends);
@@ -40,7 +40,7 @@ class TransformationValidator
         if (count($uniquePhases) > 1 && count($uniqueBackends) > 1) {
             throw new CheckConfigException(sprintf(
                 'Cannot migrate transformations in the bucket "%s" with multiple backends and phases.',
-                $this->getTransformationName()
+                $this->getTransformationName(),
             ));
         }
     }
@@ -55,7 +55,7 @@ class TransformationValidator
         if (count($this->config['rows']) === 0) {
             throw new CheckConfigException(sprintf(
                 'Transformation bucket "%s" is empty.',
-                $this->getTransformationName()
+                $this->getTransformationName(),
             ));
         }
 
@@ -70,7 +70,7 @@ class TransformationValidator
                 throw new CheckConfigException(sprintf(
                     'Transformation "%s" is empty. Please add %s or mapping to continue with migration.',
                     $v['name'],
-                    in_array($v['configuration']['type'], ['python', 'r']) ? 'scripts' : 'queries'
+                    in_array($v['configuration']['type'], ['python', 'r']) ? 'scripts' : 'queries',
                 ));
             }
         });
@@ -81,9 +81,9 @@ class TransformationValidator
         try {
             array_map(
                 fn(array $v) => Config::getComponentId(
-                    sprintf('%s-%s', $v['configuration']['backend'], $v['configuration']['type'])
+                    sprintf('%s-%s', $v['configuration']['backend'], $v['configuration']['type']),
                 ),
-                $this->config['rows']
+                $this->config['rows'],
             );
         } catch (UserException $e) {
             throw new CheckConfigException($e->getMessage(), 0, $e);

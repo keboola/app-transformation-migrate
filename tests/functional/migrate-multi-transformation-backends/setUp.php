@@ -11,7 +11,7 @@ return function (DatadirTest $test): void {
 
     $manager->createTransformation(
         $configuration,
-        'snflk row'
+        'snflk row',
     );
 
     $manager->createTransformation(
@@ -24,7 +24,7 @@ return function (DatadirTest $test): void {
             'queries' => [
                 'print(1)',
             ],
-        ]
+        ],
     );
 
     putenv('TRANSFORMATION_BUCKET_ID=' . $configuration->getConfigurationId());

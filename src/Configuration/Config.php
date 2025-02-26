@@ -40,7 +40,7 @@ class Config extends BaseConfig
                 return self::REDSHIFT_COMPONENT_ID;
             default:
                 throw new UserException(
-                    sprintf('Unsupported backend type "%s".', $transformationTypeKey)
+                    sprintf('Unsupported backend type "%s".', $transformationTypeKey),
                 );
         }
     }
@@ -57,6 +57,7 @@ class Config extends BaseConfig
 
     public function getTransformationId(): string
     {
+        // @phpstan-ignore-next-line
         return (string) $this->getValue(['parameters', 'transformationId']);
     }
 

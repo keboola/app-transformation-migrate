@@ -15,7 +15,7 @@ trait CreateTransformationBucketTrait
     public function createBucket(
         string $name = TestManager::TRANSFORMATION_BUCKET_NAME,
         ?string $description = null,
-        ?string $configurationId = null
+        ?string $configurationId = null,
     ): Configuration {
         $configuration = new Configuration();
         $configuration

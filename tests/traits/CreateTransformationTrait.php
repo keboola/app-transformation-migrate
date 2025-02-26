@@ -16,7 +16,7 @@ trait CreateTransformationTrait
         Configuration $configuration,
         ?string $name,
         ?string $description = null,
-        array $config = []
+        array $config = [],
     ): ConfigurationRow {
         $row = new ConfigurationRow($configuration);
         if ($name) {
@@ -35,7 +35,7 @@ trait CreateTransformationTrait
                 'queries' => [
                     'CREATE TABLE "out_table" AS SELECT * FROM "in_table";',
                 ],
-            ], $config)
+            ], $config),
         );
 
         $rowResult = $this->componentsClient->addConfigurationRow($row);

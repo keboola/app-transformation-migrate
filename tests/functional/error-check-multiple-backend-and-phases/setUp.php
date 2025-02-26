@@ -11,7 +11,7 @@ return function (DatadirTest $test): void {
 
     $manager->createTransformation(
         $configuration,
-        'snflk row'
+        'snflk row',
     );
 
     $manager->createTransformation(
@@ -22,7 +22,7 @@ return function (DatadirTest $test): void {
             'backend' => 'docker',
             'type' => 'python',
             'phase' => 2,
-        ]
+        ],
     );
 
     putenv('TRANSFORMATION_BUCKET_ID=' . $configuration->getConfigurationId());

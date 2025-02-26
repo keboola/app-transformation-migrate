@@ -35,7 +35,7 @@ class Application
         $transformationConfig = LegacyTransformationHelper::removeDisableTransformation($transformationConfig);
         $transformationConfig = LegacyTransformationHelper::checkAndCompletionInputMapping(
             $this->storageApiClient,
-            $transformationConfig
+            $transformationConfig,
         );
         $transformationConfig = LegacyTransformationHelper::sortTransformationRows($transformationConfig);
 
@@ -75,7 +75,7 @@ class Application
         foreach ($transformationsV2 as $item) {
             $resultTransformationsV2 = array_merge(
                 $resultTransformationsV2,
-                array_values($item)
+                array_values($item),
             );
         }
 
@@ -91,11 +91,11 @@ class Application
                 sprintf(
                     '%s-%s',
                     $resultTransformationV2->getBackend(),
-                    $resultTransformationV2->getType()
+                    $resultTransformationV2->getType(),
                 ),
                 $name,
                 $resultTransformationV2->getDescription(),
-                $this->prepareTransformationConfigV2($resultTransformationV2)
+                $this->prepareTransformationConfigV2($resultTransformationV2),
             );
 
             $result[] = [
@@ -109,7 +109,7 @@ class Application
                 $components = new Components($this->storageApiClient);
                 $components->deleteConfiguration(
                     $resultTransformationV2->getComponentId(),
-                    $newConfig->getConfigurationId()
+                    $newConfig->getConfigurationId(),
                 );
                 throw new UserException($e->getMessage(), $e->getCode(), $e);
             }
@@ -128,8 +128,8 @@ class Application
             ->setConfiguration(
                 array_merge(
                     (array) $transformationConfig['configuration'],
-                    ['migrated' => true]
-                )
+                    ['migrated' => true],
+                ),
             )
         ;
 
@@ -169,7 +169,7 @@ class Application
         string $transformationTypeKey,
         string $name,
         string $description,
-        array $config
+        array $config,
     ): Configuration {
         $options = new Configuration();
         $options

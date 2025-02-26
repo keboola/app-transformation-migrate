@@ -1,4 +1,4 @@
 parameters:
-    checkMissingIterableValueType: false
     ignoreErrors:
+        - identifier: missingType.iterableValue
         - '#Cannot call method end\(\) on Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface\|null.#'

@@ -73,7 +73,7 @@ class DatadirTest extends DatadirTestCase
         $process = $this->runScript($tempDatadir->getTmpFolder());
 
         if ($process->getOutput()) {
-            $this->output = json_decode($process->getOutput(), true);
+            $this->output = (array) json_decode($process->getOutput(), true);
         }
 
         // Load tearDown.php file
@@ -98,7 +98,7 @@ class DatadirTest extends DatadirTestCase
         $this->assertMatchesSpecification($specification, $process, $tempDatadir->getTmpFolder());
     }
 
-    protected function runScript(string $datadirPath): Process
+    protected function runScript(string $datadirPath, ?string $runId = null): Process
     {
         $fs = new Filesystem();
 
@@ -106,7 +106,7 @@ class DatadirTest extends DatadirTestCase
         if (!$fs->exists($script)) {
             throw new DatadirTestsException(sprintf(
                 'Cannot open script file "%s"',
-                $script
+                $script,
             ));
         }
 
@@ -120,8 +120,8 @@ class DatadirTest extends DatadirTestCase
                 $this->processEnv,
                 [
                     'KBC_DATADIR' => $datadirPath,
-                ]
-            )
+                ],
+            ),
         );
         $runProcess->setTimeout(0.0);
         $runProcess->run();

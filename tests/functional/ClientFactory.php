@@ -37,7 +37,7 @@ class ClientFactory
             [
                 'url' => getenv('KBC_URL'),
                 'token' => getenv('KBC_TOKEN'),
-            ]
+            ],
         );
     }
 }

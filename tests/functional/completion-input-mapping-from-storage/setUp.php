@@ -32,7 +32,7 @@ return function (DatadirTest $test): void {
         'in.c-testMigrate',
         'inputTable1',
         $file,
-        ['primaryKey' => 'column_3']
+        ['primaryKey' => 'column_3'],
     );
 
     $metadata = new Metadata($test->getStorageClient());
@@ -55,7 +55,7 @@ return function (DatadirTest $test): void {
                 'provider' => 'user',
                 'timestamp' => '2021-07-22T00:30:35+0200',
             ],
-        ]
+        ],
     );
 
     $manager->createTransformation(
