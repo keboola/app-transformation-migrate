@@ -10,7 +10,7 @@ return function (DatadirTest $test): void {
     $configuration = $manager->createBucket(
         TestManager::TRANSFORMATION_BUCKET_NAME,
         null,
-        'string-id'
+        'string-id',
     );
 
     $manager->createTransformation(
@@ -20,7 +20,7 @@ return function (DatadirTest $test): void {
 
     $manager->createTransformation(
         $configuration,
-        'snflk row 2'
+        'snflk row 2',
     );
 
     putenv('TRANSFORMATION_BUCKET_ID=' . $configuration->getConfigurationId());

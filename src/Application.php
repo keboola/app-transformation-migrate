@@ -22,6 +22,9 @@ class Application
     private Client $storageApiClient;
 
     private Components $componentsClient;
+    
+    /** @var array */
+    private $migrationResults = [];
 
     public function __construct(Client $storageApiClient)
     {
@@ -35,7 +38,7 @@ class Application
         $transformationConfig = LegacyTransformationHelper::removeDisableTransformation($transformationConfig);
         $transformationConfig = LegacyTransformationHelper::checkAndCompletionInputMapping(
             $this->storageApiClient,
-            $transformationConfig
+            $transformationConfig,
         );
         $transformationConfig = LegacyTransformationHelper::sortTransformationRows($transformationConfig);
 
@@ -75,7 +78,7 @@ class Application
         foreach ($transformationsV2 as $item) {
             $resultTransformationsV2 = array_merge(
                 $resultTransformationsV2,
-                array_values($item)
+                array_values($item),
             );
         }
 
@@ -91,11 +94,11 @@ class Application
                 sprintf(
                     '%s-%s',
                     $resultTransformationV2->getBackend(),
-                    $resultTransformationV2->getType()
+                    $resultTransformationV2->getType(),
                 ),
                 $name,
                 $resultTransformationV2->getDescription(),
-                $this->prepareTransformationConfigV2($resultTransformationV2)
+                $this->prepareTransformationConfigV2($resultTransformationV2),
             );
 
             $result[] = [
@@ -109,13 +112,43 @@ class Application
                 $components = new Components($this->storageApiClient);
                 $components->deleteConfiguration(
                     $resultTransformationV2->getComponentId(),
-                    $newConfig->getConfigurationId()
+                    $newConfig->getConfigurationId(),
                 );
                 throw new UserException($e->getMessage(), $e->getCode(), $e);
             }
         }
+        
+        // Store migration results for later use in updateOrchestrations
+        $this->migrationResults[$transformationConfig['id']] = $result;
 
         return $result;
+    }
+    
+    /**
+     * Update orchestrations to reference the new transformation configurations
+     * 
+     * @param \Psr\Log\LoggerInterface|null $logger Logger for orchestration updates
+     * @return array Details of the updated orchestrations
+     */
+    public function updateOrchestrations(?\Psr\Log\LoggerInterface $logger = null): array
+    {
+        // Create a mapping of old config IDs to new config IDs
+        $oldToNewConfigMapping = [];
+        
+        foreach ($this->migrationResults as $oldConfigId => $newConfigs) {
+            $oldToNewConfigMapping[$oldConfigId] = $newConfigs[0]['id']; // Use the first new config ID for each old config
+        }
+        
+        if (empty($oldToNewConfigMapping)) {
+            return [];
+        }
+        
+        if ($logger === null) {
+            $logger = new \Psr\Log\NullLogger();
+        }
+        
+        $orchestrationsUpdater = new OrchestrationsUpdater($this->storageApiClient, $logger, $oldToNewConfigMapping);
+        return $orchestrationsUpdater->updateOrchestrations();
     }
 
     public function markOldTransformationAsMigrated(array $transformationConfig): void
@@ -128,8 +161,8 @@ class Application
             ->setConfiguration(
                 array_merge(
                     (array) $transformationConfig['configuration'],
-                    ['migrated' => true]
-                )
+                    ['migrated' => true],
+                ),
             )
         ;
 
@@ -267,5 +300,15 @@ class Application
                 ],
             ],
         ];
+    }
+    
+    /**
+     * Get the results of the migration process
+     * 
+     * @return array Array of old config IDs mapped to new config details
+     */
+    public function getMigrationResults(): array
+    {
+        return $this->migrationResults;
     }
 }

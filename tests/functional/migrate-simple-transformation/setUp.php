@@ -11,7 +11,7 @@ return function (DatadirTest $test): void {
 
     $manager->createTransformation(
         $configuration,
-        'snflk row'
+        'snflk row',
     );
 
     $test->setTransformationBucketId($configuration->getConfigurationId());

@@ -27,7 +27,7 @@ return function (DatadirTest $test): void {
                     'whereOperator' => 'operator',
                 ],
             ],
-        ]
+        ],
     );
 
     $manager->createTransformation(
@@ -48,7 +48,7 @@ return function (DatadirTest $test): void {
                     'whereOperator' => 'operator2',
                 ],
             ],
-        ]
+        ],
     );
 
     $manager->createTransformation(
@@ -69,7 +69,7 @@ return function (DatadirTest $test): void {
                     'whereOperator' => 'operator',
                 ],
             ],
-        ]
+        ],
     );
 
     $manager->createTransformation(
@@ -90,7 +90,7 @@ return function (DatadirTest $test): void {
                     'whereOperator' => 'operator',
                 ],
             ],
-        ]
+        ],
     );
 
     $manager->createTransformation(
@@ -111,7 +111,7 @@ return function (DatadirTest $test): void {
                     'whereOperator' => 'operator',
                 ],
             ],
-        ]
+        ],
     );
 
     $test->setTransformationBucketId($configuration->getConfigurationId());

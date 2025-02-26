@@ -46,7 +46,7 @@ return function (DatadirTest $test): void {
                     ],
                 ],
             ],
-        ]
+        ],
     );
 
     $manager->createTransformation(
@@ -72,7 +72,7 @@ return function (DatadirTest $test): void {
                     ],
                 ],
             ],
-        ]
+        ],
     );
 
     $test->setTransformationBucketId($configuration->getConfigurationId());

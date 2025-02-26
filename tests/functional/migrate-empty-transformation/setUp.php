@@ -10,7 +10,7 @@ return function (DatadirTest $test): void {
     $manager = new TestManager($test->getComponentsClient());
     $configuration = $manager->createBucket(
         TestManager::TRANSFORMATION_BUCKET_NAME,
-        "test bucket description\n\nwith new line"
+        "test bucket description\n\nwith new line",
     );
 
     $row = new ConfigurationRow($configuration);

@@ -43,7 +43,7 @@ class TransformationV2
             $config['name'],
             $row['configuration']['type'],
             $row['configuration']['backend'],
-            (int) $row['configuration']['phase']
+            (int) $row['configuration']['phase'],
         );
 
         if (!empty($config['description'])) {
@@ -66,11 +66,11 @@ class TransformationV2
             $savedInputMapping = $this->inputMappingTables[$inputMappingTable['destination']];
             $renamedInputMapping['column_types'] = $this->mergeInputMappingColumnTypes(
                 $savedInputMapping['column_types'] ?? [],
-                $renamedInputMapping['column_types'] ?? []
+                $renamedInputMapping['column_types'] ?? [],
             );
             $renamedInputMapping['columns'] = $this->mergeInputMappingColumns(
                 $savedInputMapping['columns'] ?? [],
-                $renamedInputMapping['columns'] ?? []
+                $renamedInputMapping['columns'] ?? [],
             );
         }
         $this->inputMappingTables[$inputMappingTable['destination']] = $renamedInputMapping;
@@ -81,7 +81,7 @@ class TransformationV2
         $outputMappingKey = sprintf(
             '%s-%s',
             $outputMappingTable['source'],
-            $outputMappingTable['destination']
+            $outputMappingTable['destination'],
         );
 
         $this->outputMappingTables[$outputMappingKey] =
@@ -167,7 +167,7 @@ class TransformationV2
         return Config::getComponentId(sprintf(
             '%s-%s',
             $this->getBackend(),
-            $this->getType()
+            $this->getType(),
         ));
     }
 
@@ -297,7 +297,7 @@ class TransformationV2
 
         return array_keys(array_merge(
             array_flip($savedColumns),
-            array_flip($inputMappingColumns)
+            array_flip($inputMappingColumns),
         ));
     }
 }

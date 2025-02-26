@@ -3,17 +3,18 @@
     "description": "Migration tool OLD -> NEW transformation",
     "license": "MIT",
     "require": {
-        "php": "^7.4",
-        "keboola/php-component": "^8.1",
+        "php": "^7.4 || ^8.0",
+        "keboola/php-component": "^9.4",
         "keboola/storage-api-client": "^12.7",
+        "keboola/orchestrator-php-client": "^1.0",
         "marcj/topsort": "^2.0"
     },
     "require-dev": {
         "php-parallel-lint/php-parallel-lint": "^1.2",
-        "keboola/coding-standard": ">=7.0.2",
+        "keboola/coding-standard": "^15.0.1",
         "keboola/datadir-tests": "^5.2",
         "keboola/php-temp": "^2.0",
-        "phpstan/phpstan": "^0.12.14",
+        "phpstan/phpstan": "^1.12",
         "phpunit/phpunit": "^9.0",
         "symfony/process": "^5.0"
     },
@@ -54,6 +55,9 @@
     },
     "config": {
         "sort-packages": true,
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }

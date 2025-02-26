@@ -14,7 +14,7 @@ class TransformationV2Block
     }
 
     /** @var TransformationV2Code[] $codes */
-    private $codes = [];
+    private array $codes = [];
 
     public function addCode(TransformationV2Code $code): void
     {

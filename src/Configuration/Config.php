@@ -40,7 +40,7 @@ class Config extends BaseConfig
                 return self::REDSHIFT_COMPONENT_ID;
             default:
                 throw new UserException(
-                    sprintf('Unsupported backend type "%s".', $transformationTypeKey)
+                    sprintf('Unsupported backend type "%s".', $transformationTypeKey),
                 );
         }
     }
@@ -57,7 +57,16 @@ class Config extends BaseConfig
 
     public function getTransformationId(): string
     {
-        return (string) $this->getValue(['parameters', 'transformationId']);
+        return $this->getStringValue(['parameters', 'transformationId']);
+    }
+
+    public function shouldUpdateOrchestrations(): bool
+    {
+        try {
+            return (bool) $this->getValue(['parameters', 'updateOrchestrations'], false);
+        } catch (InvalidArgumentException $e) {
+            return false;
+        }
     }
 
     public function getKbcStorageToken(): string

@@ -13,35 +13,35 @@ return function (DatadirTest $test): void {
     for ($i = 1; $i <= 8; $i++) {
         $transformations[$i] = $manager->createTransformation(
             $configuration,
-            'transformation ' . $i
+            'transformation ' . $i,
         );
     }
 
     $transformations[1]->setConfiguration(
         array_merge(
-            $transformations[1]->getConfiguration(),
+            (array) $transformations[1]->getConfiguration(),
             [
                 'requires' => [
                     (string) $transformations[4]->getRowId(),
                     (string) $transformations[2]->getRowId(),
                     '123456789',
                 ],
-            ]
-        )
+            ],
+        ),
     );
 
     $transformations[2]->setConfiguration(
         array_merge(
             $transformations[2]->getConfiguration(),
-            ['requires' => [(string) $transformations[4]->getRowId()]]
-        )
+            ['requires' => [(string) $transformations[4]->getRowId()]],
+        ),
     );
 
     $transformations[3]->setConfiguration(
         array_merge(
             $transformations[3]->getConfiguration(),
-            ['requires' => [(string) $transformations[1]->getRowId(), (string) $transformations[2]->getRowId()]]
-        )
+            ['requires' => [(string) $transformations[1]->getRowId(), (string) $transformations[2]->getRowId()]],
+        ),
     );
 
     $transformations[5]->setConfiguration(
@@ -50,8 +50,8 @@ return function (DatadirTest $test): void {
             [
                 'phase' => 2,
                 'requires' => [(string) $transformations[7]->getRowId()],
-            ]
-        )
+            ],
+        ),
     );
 
     $transformations[6]->setConfiguration(
@@ -60,8 +60,8 @@ return function (DatadirTest $test): void {
             [
                 'phase' => 2,
                 'requires' => [(string) $transformations[5]->getRowId()],
-            ]
-        )
+            ],
+        ),
     );
 
     $transformations[7]->setConfiguration(
@@ -69,8 +69,8 @@ return function (DatadirTest $test): void {
             $transformations[7]->getConfiguration(),
             [
                 'phase' => 2,
-            ]
-        )
+            ],
+        ),
     );
 
     $transformations[8]->setConfiguration(
@@ -83,8 +83,8 @@ return function (DatadirTest $test): void {
                     (string) $transformations[6]->getRowId(),
                     (string) $transformations[7]->getRowId(),
                 ],
-            ]
-        )
+            ],
+        ),
     );
 
     foreach ($transformations as $transformation) {

@@ -19,6 +19,9 @@ class ConfigDefinition extends BaseConfigDefinition
                 ->scalarNode('transformationId')
                     ->isRequired()
                 ->end()
+                ->booleanNode('updateOrchestrations')
+                    ->defaultFalse()
+                ->end()
             ->end()
         ;
         // @formatter:on

@@ -15,7 +15,7 @@ class LegacyTransformationHelper
     {
         $config['rows'] = array_filter(
             $config['rows'],
-            fn(array $row) => !isset($row['configuration']['disabled']) || !$row['configuration']['disabled']
+            fn(array $row) => !isset($row['configuration']['disabled']) || !$row['configuration']['disabled'],
         );
         return $config;
     }
@@ -85,7 +85,7 @@ class LegacyTransformationHelper
 
                 $sortColumns = self::sortColumns(
                     $storageTable['columns'],
-                    $transformationConfig['rows'][$rowKey]['configuration']['input'][$itemKey]['datatypes']
+                    $transformationConfig['rows'][$rowKey]['configuration']['input'][$itemKey]['datatypes'],
                 );
                 $transformationConfig['rows'][$rowKey]['configuration']['input'][$itemKey]['datatypes'] = $sortColumns;
             }
@@ -128,7 +128,7 @@ class LegacyTransformationHelper
         }
         $rowInputMappings = (array) array_combine(
             array_map(fn($v) => $v['destination'], $row['configuration']['input']),
-            $row['configuration']['input']
+            $row['configuration']['input'],
         );
 
         foreach ($savedTransformation->getInputMappingTables() as $savedInputMappingTable) {
@@ -140,7 +140,7 @@ class LegacyTransformationHelper
                         'whereValues' => null,
                         'whereOperator' => null,
                     ],
-                    $rowInputMappings[$savedInputMappingTable['destination']]
+                    $rowInputMappings[$savedInputMappingTable['destination']],
                 );
                 $savedInputMappingTable = array_merge(
                     [
@@ -149,7 +149,7 @@ class LegacyTransformationHelper
                         'where_values' => null,
                         'where_operator' => null,
                     ],
-                    $savedInputMappingTable
+                    $savedInputMappingTable,
                 );
                 if ($actualInputMappingTable['changedSince'] !== $savedInputMappingTable['changed_since']) {
                     return false;
@@ -177,7 +177,7 @@ class LegacyTransformationHelper
                 '%s-%s-%s',
                 $row['configuration']['backend'],
                 $row['configuration']['type'],
-                $row['configuration']['phase']
+                $row['configuration']['phase'],
             );
     }
 

@@ -35,7 +35,7 @@ trait CreateTransformationTrait
                 'queries' => [
                     'CREATE TABLE "out_table" AS SELECT * FROM "in_table";',
                 ],
-            ], $config)
+            ], $config),
         );
 
         $rowResult = $this->componentsClient->addConfigurationRow($row);
